@@ -22,6 +22,7 @@
   "rules": {
     "react/react-in-jsx-scope": 0,
 		"react-native/sort-styles" : 0,
-    "react-native/no-color-literals": 1
+    "react-native/no-color-literals": 1,
+		"react-native/no-raw-text":0
   }
 }
