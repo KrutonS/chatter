@@ -6,9 +6,10 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 import { FontSource } from "@expo-google-fonts/poppins/useFonts";
+import { FontNames } from "../fonts";
 import { handleError } from "../handleError";
 
-const FONTS: Record<Fonts, FontSource> = {
+const FONTS: Record<FontNames, FontSource> = {
   Poppins_400Regular,
   Poppins_500Medium,
   Poppins_600SemiBold,
