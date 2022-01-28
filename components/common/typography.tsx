@@ -1,23 +1,29 @@
+import { FC } from "react";
 import { Text, TextStyle } from "react-native";
-import { typography } from "../../styles";
+import { typoStyles } from "../../styles";
+import { capitalize } from "../../utils/string";
 
 interface CommonProps {
   style?: TextStyle;
   children: string;
 }
+const typoEntries = Object.entries<TextStyle>(typoStyles);
+type TypoKeys = keyof typeof typoStyles;
+type NewKeys = Capitalize<TypoKeys>;
 
-export const H1 = ({ children, style }: CommonProps) => (
-  <Text style={{ ...typography.h1, ...style }}>{children}</Text>
-);
+const typography = typoEntries.reduce((obj, [key, typoStyle]) => {
+  const newKey = capitalize(key);
+  const Component = ({ children, style }: CommonProps) => (
+    <Text style={{ ...typoStyle, ...style }}>{children}</Text>
+  );
+  return { ...obj, [newKey]: Component };
+}, {} as Record<NewKeys, FC<CommonProps>>);
 
-export const H2 = ({ children, style }: CommonProps) => (
-  <Text style={{ ...typography.h2, ...style }}>{children}</Text>
-);
+type TypoProps = { type: TypoKeys } & CommonProps;
+const Typography = ({ type, children, style }: TypoProps) => {
+  const SelectedTypo = typography[capitalize(type)];
 
-export const H3 = ({ children, style }: CommonProps) => (
-  <Text style={{ ...typography.h3, ...style }}>{children}</Text>
-);
+  return <SelectedTypo style={style}>{children}</SelectedTypo>;
+};
 
-export const H4 = ({ children, style }: CommonProps) => (
-  <Text style={{ ...typography.h4, ...style }}>{children}</Text>
-);
+export default Typography;

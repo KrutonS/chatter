@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
-import { Pressable, Text } from "react-native";
-import { buttons, typography } from "../../styles";
+import { Pressable } from "react-native";
+import { buttons } from "../../styles";
+import Typography from "./Typography";
 
 interface Props {
   children: string;
@@ -26,7 +27,7 @@ const CustomButton: FC<Props> = ({ onPress, children, disabled }) => {
       onPressIn={onPressIn}
       onPressOut={onPressOut}
     >
-      <Text style={typography.buttonText}>{children}</Text>
+      <Typography type="buttonText">{children}</Typography>
     </Pressable>
   );
 };

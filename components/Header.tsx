@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC } from "react";
 import { View, ViewProps } from "react-native";
 import { header, headerButtons } from "../styles";
 

@@ -1,8 +1,9 @@
-import { Text, TextStyle, View, ViewProps } from "react-native";
-import { H1 } from "../components/common/Typography";
+import { View } from "react-native";
+import Typography from "../components/common/Typography";
 import Header from "../components/Header";
 import RoomsIcon from "../components/icons/Rooms";
 import SearchIcon from "../components/icons/Search";
+import { mainView } from "../styles";
 
 const Buttons = () => (
   <>
@@ -12,9 +13,9 @@ const Buttons = () => (
 );
 const Rooms = () => {
   return (
-    <View>
+    <View style={mainView}>
       <Header Buttons={Buttons}>
-        <H1>Rooms</H1>
+        <Typography type="h1">Rooms</Typography>
       </Header>
     </View>
   );

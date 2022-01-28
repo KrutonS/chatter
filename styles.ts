@@ -56,7 +56,7 @@ export const screenMargin = 16;
 //#endregion
 
 //#region Typography
-export const typography = StyleSheet.create({
+export const typoStyles = StyleSheet.create({
   h1: {
     fontFamily: poppinsBold,
     fontSize: 36,
@@ -118,10 +118,15 @@ export const header: ViewStyle = {
   paddingBottom: screenMargin,
   backgroundColor: blue300,
 };
+
 export const headerButtons: ViewStyle = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
   width: 96,
 };
+
+export const roomsContainer: ViewStyle = { marginTop: 36 };
+
+export const mainView: ViewStyle = { backgroundColor: blue100, height: "100%" };
 //#endregion
