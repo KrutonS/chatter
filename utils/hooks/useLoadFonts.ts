@@ -14,9 +14,9 @@ const FONTS: Record<FontNames, FontSource> = {
   Poppins_500Medium,
   Poppins_600SemiBold,
   Poppins_700Bold,
-  "SF Compact Text": "/assets/fonts/SFCompactText-Regular.ttf",
-  "SF Compact Display": "/assets/fonts/SFCompactDisplay-Regular.ttf",
-  "SF Compact Display Bold": "/assets/fonts/SFCompactDisplay-Bold.ttf",
+  "SF Compact Text": require("../../assets/fonts/SFCompactText-Regular.ttf"),
+  "SF Compact Display": require("../../assets/fonts/SFCompactDisplay-Regular.ttf"),
+  "SF Compact Display Bold": require("../../assets/fonts/SFCompactDisplay-Bold.ttf"),
 };
 
 export function useLoadFonts() {
