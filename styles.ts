@@ -1,4 +1,11 @@
-import { FlexStyle, StyleSheet } from "react-native";
+import {
+  FlexStyle,
+  PressableProps,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
 import {
   poppinsBold,
   poppinsMedium,
@@ -10,10 +17,15 @@ import {
 } from "./utils/fonts";
 
 //#region Utils
-const centerContent: FlexStyle = {
+export const centerContent: FlexStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+};
+export const removeFontPadding: TextStyle = {
+  includeFontPadding: false,
+  padding: 0,
+  textAlignVertical: "bottom",
 };
 //#endregion
 
@@ -38,13 +50,19 @@ export const gray500 = "#9FA2B2";
 //#endregion
 
 //#region Variables
-const radius = 12;
-const bigRadius = 24;
+export const radius = 12;
+export const bigRadius = 24;
+export const screenMargin = 16;
 //#endregion
 
 //#region Typography
 export const typography = StyleSheet.create({
-  h1: { fontFamily: poppinsBold, fontSize: 36, color: plum500 },
+  h1: {
+    fontFamily: poppinsBold,
+    fontSize: 36,
+    color: plum500,
+    ...removeFontPadding,
+  },
   h2: { fontFamily: poppinsBold, fontSize: 28 },
   h3: { fontFamily: poppinsBold, fontSize: 22 },
   h4: { fontFamily: poppinsSemiBold, fontSize: 16 },
@@ -67,13 +85,14 @@ export const typography = StyleSheet.create({
 //#endregion
 
 //#region Components
-const defaultButton = {
+const defaultButton: PressableProps["style"] = {
   ...centerContent,
   width: "100%",
   backgroundColor: plum500,
   borderRadius: radius,
   height: 48,
 };
+
 export const buttons = StyleSheet.create({
   default: defaultButton,
   pressed: {
@@ -85,4 +104,24 @@ export const buttons = StyleSheet.create({
     backgroundColor: gray300,
   },
 });
+
+export const header: ViewStyle = {
+  borderBottomLeftRadius: bigRadius,
+  borderBottomRightRadius: bigRadius,
+  height: 120,
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+  flexDirection: "row",
+  paddingHorizontal: screenMargin,
+  paddingBottom: screenMargin,
+  backgroundColor: blue300,
+};
+export const headerButtons: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  width: 96,
+};
 //#endregion
