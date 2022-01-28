@@ -3,6 +3,7 @@ export const black = "black";
 export const active = "#A8FF76";
 export const error = "#FF445A";
 
+export const plum200 = "#C692FD";
 export const plum300 = "#993AFC";
 export const plum500 = "#5603AD";
 export const plum700 = "#390273";
