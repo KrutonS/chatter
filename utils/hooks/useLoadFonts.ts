@@ -16,6 +16,7 @@ const FONTS: Record<FontNames, FontSource> = {
   Poppins_700Bold,
   "SF Compact Text": "/assets/fonts/SFCompactText-Regular.ttf",
   "SF Compact Display": "/assets/fonts/SFCompactDisplay-Regular.ttf",
+  "SF Compact Display Bold": "/assets/fonts/SFCompactDisplay-Bold.ttf",
 };
 
 export function useLoadFonts() {
