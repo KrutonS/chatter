@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Check typescript on all ts files
+npx tsc --noEmit
+
+# Run lint-staged
+npm run pre-commit
+
+# If anything fails, abort commit
