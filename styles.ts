@@ -35,10 +35,10 @@ export const topRight = (dist: number): ViewStyle => ({
 //#endregion
 
 //#region Colors
-export const white = "white";
-export const black = "black";
-export const active = "#A8FF76";
-export const error = "#FF445A";
+export const whiteColor = "white";
+export const blackColor = "black";
+export const activeColor = "#A8FF76";
+export const errorColor = "#FF445A";
 
 export const plum200 = "#C692FD";
 export const plum300 = "#993AFC";
@@ -65,19 +65,19 @@ export const dialogPadding = 12;
 export const typoStyles = StyleSheet.create({
   h1: {
     fontFamily: poppinsBold,
-    fontSize: 36,
+    fontSize: 28,
     color: plum500,
     ...removeFontPadding,
   },
-  h2: { fontFamily: poppinsBold, fontSize: 28 },
-  h3: { fontFamily: poppinsBold, fontSize: 22 },
-  h4: { fontFamily: poppinsSemiBold, fontSize: 16 },
+  h2: { fontFamily: poppinsBold, fontSize: 22 },
+  h3: { fontFamily: poppinsBold, fontSize: 15 },
+  h4: { fontFamily: poppinsSemiBold, fontSize: 14 },
 
   buttonText: {
     fontFamily: poppinsSemiBold,
     fontSize: 16,
     letterSpacing: 1,
-    color: white,
+    color: whiteColor,
   },
   label: { fontFamily: poppinsMedium },
 
