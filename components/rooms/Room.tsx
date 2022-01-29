@@ -1,7 +1,5 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import {
-  Button,
-  Image,
   ImageStyle,
   Pressable,
   TextStyle,
@@ -16,8 +14,8 @@ import {
   screenMargin,
   whiteColor,
 } from "../../styles";
+import ProfileImage from "../common/ProfileImage";
 import Typography from "../common/Typography";
-import ProfilePlaceholder from "../icons/ProfilePlaceholder";
 import Status from "./Status";
 
 type Props = { room: Room };
@@ -26,16 +24,13 @@ const RoomView = ({ room }: Props) => {
   const { name, active, image, lastActive, mess = "abc", id } = room;
   const textStyle = active ? textActive : undefined;
   const navigation = useNavigation<NavigationProp<ParamList, "Rooms">>();
+  type FixNavigate = (to: "Chat", arg: ParamList["Chat"]) => void;
   const onPress = () => {
-    (navigation.navigate as any)("Chat", { roomId: id });
+    (navigation.navigate as FixNavigate)("Chat", { roomId: id });
   };
   return (
     <Pressable style={active ? roomViewActive : roomView} onPress={onPress}>
-      {image ? (
-        <Image source={image} style={imageStyle} />
-      ) : (
-        <ProfilePlaceholder {...imageStyle} />
-      )}
+      <ProfileImage source={image} style={imageStyle} />
       <View style={texts}>
         <Typography style={textStyle} type="h3">
           {name}
