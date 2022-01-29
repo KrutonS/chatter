@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { View, ViewProps } from "react-native";
-import { header, headerButtons } from "../styles";
+import { View, ViewProps, ViewStyle } from "react-native";
+import { bigRadius, blue300, screenMargin } from "../styles";
 
 interface Props {
   Buttons: FC<ViewProps>;
@@ -14,6 +14,27 @@ const Header: FC<Props> = ({ children, Buttons }) => {
       </View>
     </View>
   );
+};
+
+const header: ViewStyle = {
+  borderBottomLeftRadius: bigRadius,
+  borderBottomRightRadius: bigRadius,
+  height: 120,
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+  flexDirection: "row",
+  paddingHorizontal: screenMargin,
+  paddingBottom: screenMargin,
+  backgroundColor: blue300,
+};
+
+const headerButtons: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  width: 96,
 };
 
 export default Header;

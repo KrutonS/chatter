@@ -1,7 +1,7 @@
-import Svg, { Circle, Path } from "react-native-svg";
+import Svg, { Circle, Path, SvgProps } from "react-native-svg";
 
-const PlusIcon = () => (
-  <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+const PlusIcon = (props: SvgProps) => (
+  <Svg width="44" height="44" viewBox="0 0 44 44" fill="none" {...props}>
     <Circle cx="22" cy="22" r="22" fill="white" />
     <Path
       fill-rule="evenodd"

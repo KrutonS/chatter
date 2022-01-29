@@ -1,7 +1,7 @@
-import Svg, { Circle, Path } from "react-native-svg";
+import Svg, { Circle, Path, SvgProps } from "react-native-svg";
 
-const VideoCallIcon = () => (
-  <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+const VideoCallIcon = (props: SvgProps) => (
+  <Svg width="44" height="44" viewBox="0 0 44 44" fill="none" {...props}>
     <Circle cx="22" cy="22" r="22" fill="white" />
     <Path
       d="M23.643 15H12.357C11.6107 15 11 15.7378 11 16.6601V27.3399C11 28.253 11.6031 29 12.357 29C22.8551 29 22.0949 29 23.643 29C24.3893 29 25 28.2622 25 27.3399V16.6601C25 15.747 24.3893 15 23.643 15Z"

@@ -1,7 +1,6 @@
 import {
   FlexStyle,
   PressableProps,
-  StyleProp,
   StyleSheet,
   TextStyle,
   ViewStyle,
@@ -27,6 +26,12 @@ export const removeFontPadding: TextStyle = {
   padding: 0,
   textAlignVertical: "bottom",
 };
+
+export const topRight = (dist: number): ViewStyle => ({
+  position: "absolute",
+  top: dist,
+  right: dist,
+});
 //#endregion
 
 //#region Colors
@@ -53,6 +58,7 @@ export const gray500 = "#9FA2B2";
 export const radius = 12;
 export const bigRadius = 24;
 export const screenMargin = 16;
+export const dialogPadding = 12;
 //#endregion
 
 //#region Typography
@@ -76,7 +82,12 @@ export const typoStyles = StyleSheet.create({
   label: { fontFamily: poppinsMedium },
 
   titleAndInput: { fontFamily: poppinsMedium, fontSize: 15, lineHeight: 20 },
-  caption: { fontFamily: poppins, fontSize: 10, lineHeight: 10 },
+  caption: {
+    fontFamily: poppins,
+    fontSize: 10,
+    lineHeight: 10,
+    color: gray500,
+  },
 
   bodyText: { fontFamily: sfCompactText, fontSize: 14 },
   caption2: { fontFamily: sfCompactDisplayBold, fontSize: 12, lineHeight: 16 },
@@ -85,48 +96,6 @@ export const typoStyles = StyleSheet.create({
 //#endregion
 
 //#region Components
-const defaultButton: PressableProps["style"] = {
-  ...centerContent,
-  width: "100%",
-  backgroundColor: plum500,
-  borderRadius: radius,
-  height: 48,
-};
-
-export const buttons = StyleSheet.create({
-  default: defaultButton,
-  pressed: {
-    ...defaultButton,
-    backgroundColor: plum700,
-  },
-  disabled: {
-    ...defaultButton,
-    backgroundColor: gray300,
-  },
-});
-
-export const header: ViewStyle = {
-  borderBottomLeftRadius: bigRadius,
-  borderBottomRightRadius: bigRadius,
-  height: 120,
-  width: "100%",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "flex-end",
-  flexDirection: "row",
-  paddingHorizontal: screenMargin,
-  paddingBottom: screenMargin,
-  backgroundColor: blue300,
-};
-
-export const headerButtons: ViewStyle = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  width: 96,
-};
-
-export const roomsContainer: ViewStyle = { marginTop: 36 };
 
 export const mainView: ViewStyle = { backgroundColor: blue100, height: "100%" };
 //#endregion

@@ -1,12 +1,13 @@
-import Svg, { Circle, EMaskUnits, G, Mask, Path } from "react-native-svg";
+import Svg, { Circle, G, Mask, Path, SvgProps } from "react-native-svg";
 
-const ProfilePlaceholder = () => (
-  <Svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+const ProfilePlaceholder = (props: SvgProps) => (
+  <Svg width="64" height="64" viewBox="0 0 64 64" fill="none" {...props}>
     <Circle cx="32" cy="32" r="32" fill="#E9EAEE" />
     <Mask
       id="mask0"
       mask-type="alpha"
-      maskUnits={EMaskUnits.USER_SPACE_ON_USE}
+      // Getting false negative here somehow
+      maskUnits={"userSpaceOnUse" as any}
       x="0"
       y="0"
       width="64"

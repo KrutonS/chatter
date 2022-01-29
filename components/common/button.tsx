@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import { Pressable } from "react-native";
-import { buttons } from "../../styles";
+import { Pressable, PressableProps, StyleSheet } from "react-native";
+import { centerContent, gray300, plum500, plum700, radius } from "../../styles";
 import Typography from "./Typography";
 
 interface Props {
@@ -31,5 +31,25 @@ const CustomButton: FC<Props> = ({ onPress, children, disabled }) => {
     </Pressable>
   );
 };
+
+const defaultButton: PressableProps["style"] = {
+  ...centerContent,
+  width: "100%",
+  backgroundColor: plum500,
+  borderRadius: radius,
+  height: 48,
+};
+
+const buttons = StyleSheet.create({
+  default: defaultButton,
+  pressed: {
+    ...defaultButton,
+    backgroundColor: plum700,
+  },
+  disabled: {
+    ...defaultButton,
+    backgroundColor: gray300,
+  },
+});
 
 export default CustomButton;

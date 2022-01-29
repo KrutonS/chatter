@@ -1,7 +1,7 @@
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path, SvgProps } from "react-native-svg";
 
-const VisionLowIcon = () => (
-  <Svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+const VisionLowIcon = (props: SvgProps) => (
+  <Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
     <Path
       d="M10.4733 2.26051L9.47131 3.96559C6.026 3.81793 2.53147 5.48082 0.186545 8.93668C-0.059549 9.29879 -0.0630646 9.79098 0.179514 10.1636C1.20959 11.7211 2.46819 12.8988 3.84279 13.725L3.34709 14.6215C2.64397 15.9433 4.50373 17.0086 5.29475 15.75L12.4209 3.38903C13.103 2.26051 11.419 0.892934 10.4733 2.26051Z"
       fill="#BFC1CC"
