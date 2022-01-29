@@ -1,37 +1,32 @@
 import { Image, ImageStyle, View, ViewStyle } from "react-native";
 import { SvgProps } from "react-native-svg";
-import { Room } from "../../global";
 import {
   dialogPadding,
   plum500,
   radius,
   screenMargin,
-  white,
+  whiteColor,
 } from "../../styles";
 import Typography from "../common/Typography";
 import ProfilePlaceholder from "../icons/ProfilePlaceholder";
 import Status from "./Status";
 
-const mock: Room = {
-  id: "2",
-  name: "name",
-  mess: "abcdefg",
-  lastActive: "abcd",
-};
+type Props = { room: Room };
 
-const RoomView = () => {
+const RoomView = ({ room }: Props) => {
+  const { name, active, image, lastActive, mess = "abc" } = room;
   return (
-    <View style={mock.active ? roomViewActive : roomView}>
-      {mock.image ? (
-        <Image source={mock.image} style={image} />
+    <View style={active ? roomViewActive : roomView}>
+      {image ? (
+        <Image source={image} style={imageStyle} />
       ) : (
-        <ProfilePlaceholder {...image} />
+        <ProfilePlaceholder {...imageStyle} />
       )}
-      <View>
-        <Typography type="h3">{mock.name}</Typography>
-        <Typography type="bodyText">ABCDEFGHIJKLMNOP</Typography>
+      <View style={texts}>
+        <Typography type="h3">{name}</Typography>
+        {mess && <Typography type="bodyText">{mess}</Typography>}
       </View>
-      <Status active={mock.active} lastActive={mock.lastActive} />
+      <Status active={active} lastActive={lastActive} />
     </View>
   );
 };
@@ -44,7 +39,7 @@ const roomView: ViewStyle = {
   paddingVertical: dialogPadding,
   paddingHorizontal: screenMargin,
   marginBottom: dialogPadding,
-  backgroundColor: white,
+  backgroundColor: whiteColor,
   borderRadius: radius,
   display: "flex",
   flexDirection: "row",
@@ -54,8 +49,15 @@ const roomViewActive: ViewStyle = {
   backgroundColor: plum500,
 };
 
-const image: ImageStyle & SvgProps = {
+const imageStyle: ImageStyle & SvgProps = {
   width: 64,
   height: 64,
   marginRight: screenMargin,
+};
+
+const texts: ViewStyle = {
+  display: "flex",
+  justifyContent: "center",
+  // marginRight: 100,
+  maxWidth: "80%",
 };

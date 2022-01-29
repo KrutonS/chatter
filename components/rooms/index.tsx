@@ -1,13 +1,14 @@
 import { ScrollView, ViewStyle } from "react-native";
 import RoomView from "./Room";
 
-const RoomsContainer = () => {
+type Props = { rooms: Room[] };
+
+const RoomsContainer = ({ rooms }: Props) => {
   return (
     <ScrollView style={roomsContainer}>
-      <RoomView></RoomView>
-      <RoomView></RoomView>
-      <RoomView></RoomView>
-      <RoomView></RoomView>
+      {rooms.map((room) => (
+        <RoomView room={room} key={room.id} />
+      ))}
     </ScrollView>
   );
 };

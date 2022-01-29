@@ -1,5 +1,5 @@
 import { View, ViewStyle } from "react-native";
-import { active, screenMargin, topRight } from "../../styles";
+import { activeColor, screenMargin, topRight } from "../../styles";
 import Typography from "../common/Typography";
 
 type StatusProps = {
@@ -20,7 +20,7 @@ const Status = ({ active, lastActive }: StatusProps) => {
 
 const activeDot: ViewStyle = {
   ...topRight,
-  backgroundColor: active,
+  backgroundColor: activeColor,
   width: 12,
   height: 12,
   borderRadius: 100,
