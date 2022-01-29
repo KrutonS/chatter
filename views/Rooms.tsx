@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import Typography from "../components/common/Typography";
@@ -44,7 +45,6 @@ const Rooms = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [, setUser] = useUser();
   const { data } = useQuery<Response>(query);
-  console.log({ data });
   useEffect(() => {
     if (data) {
       const { rooms, user } = data.usersRooms;
@@ -52,11 +52,6 @@ const Rooms = () => {
       setRooms(rooms);
     }
   }, [data]);
-  // if(data){
-  // 	const {rooms:responseRooms,user} = data.usersRooms;
-  // 	setUser(user);
-  // 	setRooms(responseRooms);
-  // }
   return (
     <View style={mainView}>
       <Header Buttons={Buttons}>

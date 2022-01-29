@@ -16,4 +16,8 @@ declare global {
     email: string;
     role: string;
   }
+  type ParamList = {
+    Rooms: undefined;
+    Chat: { roomId: string };
+  };
 }
