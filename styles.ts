@@ -32,6 +32,8 @@ export const topRight = (dist: number): ViewStyle => ({
   top: dist,
   right: dist,
 });
+
+export const fill = { width: "100%", height: "100%" };
 //#endregion
 
 //#region Colors

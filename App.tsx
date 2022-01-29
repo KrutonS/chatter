@@ -1,9 +1,6 @@
 import { ApolloProvider } from "@apollo/client";
 import AppLoading from "expo-app-loading";
-import {
-  NavigationContainer,
-  useNavigationState,
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import widlarzClient from "./lib/api";
 import { UserProvider } from "./utils/contexts/user";

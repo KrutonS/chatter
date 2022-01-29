@@ -1,5 +1,4 @@
 import { gql, useQuery } from "@apollo/client";
-import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import Typography from "../components/common/Typography";
@@ -7,6 +6,7 @@ import Header from "../components/Header";
 import RoomsIcon from "../components/icons/Rooms";
 import SearchIcon from "../components/icons/Search";
 import RoomsContainer from "../components/rooms";
+import { userFrag } from "../lib/api";
 import { mainView } from "../styles";
 import { useUser } from "../utils/contexts/user";
 
@@ -24,20 +24,14 @@ const query = gql`
         id
         name
       }
-      user {
-        id
-        email
-        firstName
-        lastName
-        role
-      }
+      ${userFrag}
     }
   }
 `;
 interface Response {
   usersRooms: {
     rooms: Room[];
-    user: User;
+    user: ChatUser;
   };
 }
 

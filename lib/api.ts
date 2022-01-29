@@ -10,3 +10,12 @@ const widlarzClient = new ApolloClient({
 });
 
 export default widlarzClient;
+
+export const userFrag = `
+user {
+	id
+	firstName
+	email
+	lastName
+	role
+}`;
