@@ -1,9 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import AppLoading from "expo-app-loading";
 import { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import {
+  Bubble,
   GiftedChat,
   IMessage,
   InputToolbar,
@@ -11,6 +11,7 @@ import {
 } from "react-native-gifted-chat";
 import ChatHeaderItem from "../components/chat/ChatHeaderItem";
 import ChatMessage from "../components/chat/Message";
+import TypingIndicator from "../components/chat/TypingIndicator";
 import ProfileImage from "../components/common/ProfileImage";
 import Header from "../components/Header";
 import PhoneIcon from "../components/icons/Phone";
@@ -76,8 +77,6 @@ const Chat = () => {
   const room = data?.room;
   const [loggedUser] = useUser();
   if (loggedUser === undefined) throw new Error("No user logged in!");
-  // if (!loggedUser || !data) return <AppLoading />;
-  // const { room } = data;
   useEffect(() => {
     if (data) {
       const receivedMessages = data.room.messages.map((m) =>
@@ -94,7 +93,6 @@ const Chat = () => {
       {room && (
         <GiftedChat
           onSend={(message) => setSortMessages([...messages, ...message])}
-          isCustomViewBottom
           messages={messages}
           user={userToGiftedUser(loggedUser)}
           timeTextStyle={{ right: styles.hideText, left: styles.hideText }}
@@ -113,19 +111,11 @@ const Chat = () => {
           renderInputToolbar={(props) => (
             <InputToolbar {...props} containerStyle={styles.toolbar} />
           )}
-          // renderFooter={() => (
-          //   <View
-          //     style={{ backgroundColor: "red", width: "100%", height: "100%" }}
-          //   ></View>
-          // )}
+          renderFooter={() => <TypingIndicator isTyping />}
           textInputProps={{ style: styles.input }}
-          // renderActions={() => (
-          //   <View
-          //     style={{ backgroundColor: "red", width: "100%", height: "100%", zIndex:-10 }}
-          //   ></View>)}
-
           alwaysShowSend
           infiniteScroll
+          isCustomViewBottom
         ></GiftedChat>
       )}
     </View>
