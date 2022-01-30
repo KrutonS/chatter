@@ -1,7 +1,12 @@
-import { Text } from "react-native";
+import InputContainer from "../components/common/InputContainer";
+import Main from "../components/common/MainView";
 
 const SignUp = () => {
-  return <Text>SIGNUP</Text>;
+  return (
+    <Main forAuth>
+      <InputContainer></InputContainer>
+    </Main>
+  );
 };
 
 export default SignUp;

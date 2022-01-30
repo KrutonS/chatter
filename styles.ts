@@ -98,11 +98,3 @@ export const typoStyles = StyleSheet.create({
   specialText: { fontFamily: sfCompactDisplay, fontSize: 12, lineHeight: 16 },
 });
 //#endregion
-
-//#region Components
-
-export const mainView: ViewStyle = {
-  backgroundColor: blue100,
-  height: "100%",
-};
-//#endregion

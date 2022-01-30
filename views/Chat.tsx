@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import {
   GiftedChat,
   IMessage,
@@ -12,6 +12,7 @@ import {
 import ChatHeaderItem from "../components/chat/ChatHeaderItem";
 import ChatMessage from "../components/chat/Message";
 import TypingIndicator from "../components/chat/TypingIndicator";
+import Main from "../components/common/MainView";
 import ProfileImage from "../components/common/ProfileImage";
 import Header from "../components/Header";
 import PhoneIcon from "../components/icons/Phone";
@@ -28,7 +29,6 @@ import {
   blue300,
   smallSpace,
   fill,
-  mainView,
   radius,
   bigSpace,
   whiteColor,
@@ -197,7 +197,7 @@ const Chat = () => {
   // #endregion
 
   return (
-    <View style={mainView}>
+    <Main>
       <Header Buttons={Buttons}>
         {room && <ChatHeaderItem room={room} />}
       </Header>
@@ -236,7 +236,7 @@ const Chat = () => {
           isCustomViewBottom
         ></GiftedChat>
       )}
-    </View>
+    </Main>
   );
 };
 

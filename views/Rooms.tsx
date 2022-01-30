@@ -1,13 +1,12 @@
 import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
+import Main from "../components/common/MainView";
 import Typography from "../components/common/Typography";
 import Header from "../components/Header";
 import RoomsIcon from "../components/icons/Rooms";
 import SearchIcon from "../components/icons/Search";
 import RoomsContainer from "../components/rooms";
 import { userFrag } from "../lib/api";
-import { mainView } from "../styles";
 // import { useUser } from "../utils/contexts/user";
 
 const Buttons = () => (
@@ -47,12 +46,12 @@ const Rooms = () => {
     }
   }, [data]);
   return (
-    <View style={mainView}>
+    <Main>
       <Header Buttons={Buttons}>
         <Typography type="h1">Rooms</Typography>
       </Header>
       <RoomsContainer rooms={rooms} />
-    </View>
+    </Main>
   );
 };
 

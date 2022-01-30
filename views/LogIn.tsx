@@ -4,17 +4,12 @@ import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import CustomButton from "../components/common/Button";
 import Input from "../components/common/Input";
+import InputContainer from "../components/common/InputContainer";
+import SimpleLink from "../components/common/Link";
+import Main from "../components/common/MainView";
 import Typography from "../components/common/Typography";
 import { userFrag } from "../lib/api";
-import {
-  authBottomSpace,
-  authTopSpace,
-  bigSpace,
-  blue300,
-  mainView,
-  smallSpace,
-  whiteColor,
-} from "../styles";
+import { authBottomSpace, bigSpace, smallSpace, whiteColor } from "../styles";
 import { useUser } from "../utils/contexts/user";
 import { emailRegex } from "../utils/global";
 import { getErrorMessage } from "../utils/handleError";
@@ -63,14 +58,14 @@ const LogIn = () => {
     }
   };
   return (
-    <View style={{ ...mainView, ...styles.main }}>
+    <Main forAuth>
       <Typography type="h1" style={styles.h1}>
         Welcome Back
       </Typography>
       <Typography type="h2" style={styles.h2}>
         Log in and stay in touch with&nbsp;everyone!
       </Typography>
-      <View style={styles.inputView}>
+      <InputContainer>
         <Input
           control={control}
           label="e-mail address"
@@ -85,28 +80,23 @@ const LogIn = () => {
           secure
           required
         />
-      </View>
+      </InputContainer>
       <View style={styles.bottomView}>
         <CustomButton onPress={handleSubmit(onSubmit)}>Log in</CustomButton>
         <View style={styles.bottomTextsView}>
           <Typography type="caption2" style={styles.whiteText}>
             Don&apos;t have an account?
           </Typography>
-          <Typography type="buttonTextSmall" style={styles.signUp}>
+          <SimpleLink to="SignUp" style={styles.signUp}>
             Sign up
-          </Typography>
+          </SimpleLink>
         </View>
       </View>
-    </View>
+    </Main>
   );
 };
 
 const styles = StyleSheet.create({
-  main: {
-    backgroundColor: blue300,
-    paddingTop: authTopSpace,
-    paddingHorizontal: bigSpace,
-  },
   h1: {
     marginBottom: smallSpace * 2,
   },
@@ -117,9 +107,7 @@ const styles = StyleSheet.create({
   whiteText: {
     color: whiteColor,
   },
-  inputView: {
-    marginHorizontal: bigSpace,
-  },
+
   bottomView: {
     position: "absolute",
     bottom: 0,

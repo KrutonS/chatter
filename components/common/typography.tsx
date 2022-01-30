@@ -7,7 +7,7 @@ interface CustomProps {
   children: string;
   type: TypoKeys;
 }
-type TypoProps = CustomProps & Omit<TextProps, "style">;
+export type TypoProps = CustomProps & Omit<TextProps, "style">;
 
 const Typography = ({ type, children, style, ...other }: TypoProps) => {
   let textStyle: TextStyle = typoStyles[type];
