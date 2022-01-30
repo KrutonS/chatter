@@ -41,7 +41,7 @@ type Response = {
 
 const LogIn = () => {
   const { control, setError, handleSubmit } = useForm<FormValues>();
-  const { navigate } = useNavigation<NavigationProp<ParamList, "Login">>();
+  const { navigate } = useNavigation<NavigationProp<ParamList, "LogIn">>();
   const [, setUser] = useUser();
   const [sendCreds] = useMutation<Response, FormValues>(loginQuery);
   const onSubmit = async (variables: FormValues) => {
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   main: {
     backgroundColor: blue300,
     paddingTop: authTopSpace,
+    paddingHorizontal: bigSpace,
   },
   h1: {
     marginBottom: smallSpace * 2,

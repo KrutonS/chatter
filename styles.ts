@@ -104,6 +104,5 @@ export const typoStyles = StyleSheet.create({
 export const mainView: ViewStyle = {
   backgroundColor: blue100,
   height: "100%",
-  paddingHorizontal: bigSpace,
 };
 //#endregion
