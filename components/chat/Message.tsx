@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { StyleSheet, TextStyle, View } from "react-native";
 import { IMessage, MessageProps } from "react-native-gifted-chat";
 import { isSameUser } from "react-native-gifted-chat/lib/utils";
-import { dialogPadding, plum300, radius, whiteColor } from "../../styles";
+import { smallSpace, plum300, radius, whiteColor } from "../../styles";
 import Typography from "../common/Typography";
 
 interface Props {
@@ -40,10 +40,10 @@ const styles = StyleSheet.create({
     borderRadius: radius,
     borderBottomLeftRadius: 0,
     backgroundColor: whiteColor,
-    padding: dialogPadding,
-    marginBottom: dialogPadding,
+    padding: smallSpace,
+    marginBottom: smallSpace,
     width: "65%",
-    marginLeft: dialogPadding * 2,
+    marginLeft: smallSpace * 2,
   },
   messageYours: {
     backgroundColor: plum300,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     color: whiteColor,
   },
   messageBreak: {
-    marginBottom: dialogPadding * 2,
+    marginBottom: smallSpace * 2,
   },
 });
 

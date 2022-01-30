@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, ViewProps, ViewStyle } from "react-native";
-import { bigRadius, blue300, screenMargin } from "../styles";
+import { bigRadius, blue300, bigSpace } from "../styles";
 
 interface Props {
   Buttons: FC<ViewProps>;
@@ -25,8 +25,8 @@ const header: ViewStyle = {
   justifyContent: "space-between",
   alignItems: "flex-end",
   flexDirection: "row",
-  paddingHorizontal: screenMargin,
-  paddingBottom: screenMargin,
+  paddingHorizontal: bigSpace,
+  paddingBottom: bigSpace,
   backgroundColor: blue300,
 };
 

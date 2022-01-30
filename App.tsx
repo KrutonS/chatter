@@ -7,6 +7,7 @@ import { UserProvider } from "./utils/contexts/user";
 import { useLoadFonts } from "./utils/hooks/loadFonts";
 import Rooms from "./views/Rooms";
 import Chat from "./views/Chat";
+import LogIn from "./views/LogIn";
 
 const disableHeader = { header: () => null };
 
@@ -19,16 +20,21 @@ export default function App() {
     <ApolloProvider client={widlarzClient}>
       <UserProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Rooms">
-            <Stack.Screen
-              name="Chat"
-              component={Chat}
-              // TODO implement header with context or using conditionals inside
-              options={disableHeader}
-            />
+          <Stack.Navigator initialRouteName="Login">
             <Stack.Screen
               name="Rooms"
               component={Rooms}
+              // TODO implement header with context
+              options={disableHeader}
+            />
+            <Stack.Screen
+              name="Chat"
+              component={Chat}
+              options={disableHeader}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LogIn}
               options={disableHeader}
             />
           </Stack.Navigator>

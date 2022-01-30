@@ -53,8 +53,9 @@ export const gray500 = "#9FA2B2";
 //#region Variables
 export const radius = 12;
 export const bigRadius = 24;
-export const screenMargin = 16;
-export const dialogPadding = 12;
+export const smallSpace = 12;
+export const bigSpace = 16;
+export const authTopMargin = 76;
 //#endregion
 
 //#region Typography
@@ -93,5 +94,9 @@ export const typoStyles = StyleSheet.create({
 
 //#region Components
 
-export const mainView: ViewStyle = { backgroundColor: blue100, height: "100%" };
+export const mainView: ViewStyle = {
+  backgroundColor: blue100,
+  height: "100%",
+  paddingHorizontal: bigSpace,
+};
 //#endregion

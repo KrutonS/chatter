@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, Image, Pressable, StyleSheet, View } from "react-native";
-import { dialogPadding, plum500, screenMargin, whiteColor } from "../../styles";
+import { smallSpace, plum500, bigSpace, whiteColor } from "../../styles";
 import ProfileImage from "../common/ProfileImage";
 import Typography from "../common/Typography";
 
@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    maxWidth: windowWidth - 96 - screenMargin * 2 - dialogPadding,
+    maxWidth: windowWidth - 96 - bigSpace * 2 - smallSpace,
   },
   image: {
     width: 44,
     height: 44,
-    marginRight: dialogPadding,
+    marginRight: smallSpace,
     marginLeft: 18,
   },
   caret: {

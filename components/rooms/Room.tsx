@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import { SvgProps } from "react-native-svg";
 import {
-  dialogPadding,
+  smallSpace,
   plum500,
   radius,
-  screenMargin,
+  bigSpace,
   whiteColor,
 } from "../../styles";
 import ProfileImage from "../common/ProfileImage";
@@ -48,9 +48,9 @@ export default RoomView;
 
 const roomView: ViewStyle = {
   position: "relative",
-  paddingVertical: dialogPadding,
-  paddingHorizontal: screenMargin,
-  marginBottom: dialogPadding,
+  paddingVertical: smallSpace,
+  paddingHorizontal: bigSpace,
+  marginBottom: smallSpace,
   backgroundColor: whiteColor,
   borderRadius: radius,
   display: "flex",
@@ -64,7 +64,7 @@ const textActive: TextStyle = { color: whiteColor };
 const imageStyle: ImageStyle & SvgProps = {
   width: 64,
   height: 64,
-  marginRight: screenMargin,
+  marginRight: bigSpace,
 };
 
 const texts: ViewStyle = {

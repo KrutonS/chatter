@@ -21,11 +21,11 @@ import { userFrag } from "../lib/api";
 import {
   blackColor,
   blue300,
-  dialogPadding,
+  smallSpace,
   fill,
   mainView,
   radius,
-  screenMargin,
+  bigSpace,
   whiteColor,
 } from "../styles";
 import { useUser } from "../utils/contexts/user";
@@ -242,7 +242,7 @@ const inputHeight = 41;
 const { width: windowWidth } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 2 * dialogPadding,
+    marginHorizontal: 2 * smallSpace,
     paddingBottom: inputHeight - 12,
   },
   hideText: {
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: radius,
     borderBottomRightRadius: 0,
     height: inputHeight,
-    width: windowWidth - 2 * screenMargin - toolbarGap - sendSize - 8,
+    width: windowWidth - 2 * bigSpace - toolbarGap - sendSize - 8,
     paddingHorizontal: 15,
     marginRight: toolbarGap,
     color: blackColor,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   toolbar: {
     height: 73,
     width: "100%",
-    padding: screenMargin,
+    padding: bigSpace,
     borderTopLeftRadius: radius,
     borderTopRightRadius: radius,
     backgroundColor: blue300,
