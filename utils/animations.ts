@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 
-// Animated.
-export const useSpring = (
+export const useLoop = (
   initial: number,
   target: number,
   duration: number,

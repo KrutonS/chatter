@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { StyleSheet, TextStyle, View } from "react-native";
 import { IMessage, MessageProps } from "react-native-gifted-chat";
+import { isSameUser } from "react-native-gifted-chat/lib/utils";
 import { dialogPadding, plum300, radius, whiteColor } from "../../styles";
 import Typography from "../common/Typography";
 
@@ -13,9 +14,10 @@ const ChatMessage: FC<Props> = ({ message, loggedUser }) => {
   const { currentMessage, nextMessage } = message;
   if (!currentMessage) return null;
   const { text, user } = currentMessage;
+
   const isYours = user._id === loggedUser.id;
-  const nextUser = nextMessage?.user;
-  const userChanges = user._id !== nextUser?._id && nextUser !== undefined;
+  const userChanges = !isSameUser(currentMessage, nextMessage);
+
   let style = styles.message;
   let textStyle: undefined | TextStyle = undefined;
   if (isYours) {
@@ -23,6 +25,7 @@ const ChatMessage: FC<Props> = ({ message, loggedUser }) => {
     textStyle = styles.textYours;
   }
   if (userChanges) style = { ...style, ...styles.messageBreak };
+
   return (
     <View style={style}>
       <Typography type="bodyText" style={textStyle}>

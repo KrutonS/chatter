@@ -23,6 +23,7 @@ export default function App() {
             <Stack.Screen
               name="Chat"
               component={Chat}
+              // TODO implement header with context or using conditionals inside
               options={disableHeader}
             />
             <Stack.Screen

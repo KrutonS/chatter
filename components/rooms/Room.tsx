@@ -21,7 +21,7 @@ import Status from "./Status";
 type Props = { room: Room };
 
 const RoomView = ({ room }: Props) => {
-  const { name, active, image, lastActive, mess = "abc", id } = room;
+  const { name, active, image, lastActive, mess, id } = room;
   const textStyle = active ? textActive : undefined;
   const navigation = useNavigation<NavigationProp<ParamList, "Rooms">>();
   type FixNavigate = (to: "Chat", arg: ParamList["Chat"]) => void;
@@ -35,11 +35,9 @@ const RoomView = ({ room }: Props) => {
         <Typography style={textStyle} type="h3">
           {name}
         </Typography>
-        {mess && (
-          <Typography style={textStyle} type="bodyText">
-            {mess}
-          </Typography>
-        )}
+        <Typography style={textStyle} type="bodyText">
+          {mess || "Not active"}
+        </Typography>
       </View>
       <Status active={active} lastActive={lastActive} />
     </Pressable>

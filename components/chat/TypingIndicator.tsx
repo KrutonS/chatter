@@ -1,7 +1,6 @@
-import { FC, useState } from "react";
 import { Animated, ImageSourcePropType, StyleSheet, View } from "react-native";
 import { blue300, dialogPadding, radius, whiteColor } from "../../styles";
-import { useSpring } from "../../utils/animations";
+import { useLoop } from "../../utils/animations";
 import ProfileImage from "../common/ProfileImage";
 
 type Props = { isTyping?: boolean; avatar?: ImageSourcePropType };
@@ -9,7 +8,7 @@ type Props = { isTyping?: boolean; avatar?: ImageSourcePropType };
 const Dot = ({ i }: { i: number }) => {
   const initial = ((i % 2) * 2 - 1) * 5;
   const target = -initial;
-  const offset = useSpring(initial, target, 0.5);
+  const offset = useLoop(initial, target, 0.5);
   return (
     <Animated.View
       key={i}
@@ -30,6 +29,7 @@ const TypingIndicator = ({ isTyping, avatar }: Props) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   indicator: {
     backgroundColor: whiteColor,

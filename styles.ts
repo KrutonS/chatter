@@ -1,10 +1,4 @@
-import {
-  FlexStyle,
-  PressableProps,
-  StyleSheet,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
+import { FlexStyle, StyleSheet, TextStyle, ViewStyle } from "react-native";
 import {
   poppinsBold,
   poppinsMedium,
