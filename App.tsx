@@ -8,6 +8,7 @@ import { useLoadFonts } from "./utils/hooks/loadFonts";
 import Rooms from "./views/Rooms";
 import Chat from "./views/Chat";
 import LogIn from "./views/LogIn";
+import SignUp from "./views/SignUp";
 
 const disableHeader = { header: () => null };
 
@@ -35,6 +36,11 @@ export default function App() {
             <Stack.Screen
               name="Login"
               component={LogIn}
+              options={disableHeader}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
               options={disableHeader}
             />
           </Stack.Navigator>

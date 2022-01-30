@@ -1,7 +1,11 @@
-import { Button, StyleSheet, TextStyle, View } from "react-native";
+import { gql, useMutation } from "@apollo/client";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useForm } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
 import CustomButton from "../components/common/Button";
 import Input from "../components/common/Input";
 import Typography from "../components/common/Typography";
+import { userFrag } from "../lib/api";
 import {
   authBottomSpace,
   authTopSpace,
@@ -11,8 +15,53 @@ import {
   smallSpace,
   whiteColor,
 } from "../styles";
+import { useUser } from "../utils/contexts/user";
+import { emailRegex } from "../utils/global";
+import { getErrorMessage } from "../utils/handleError";
+
+const loginQuery = gql`
+mutation login($email:String!, $password:String!){
+  loginUser(email:$email,password:$password){
+    token
+    ${userFrag}
+  }
+}`;
+
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+type Response = {
+  loginUser: {
+    token: string;
+    user: ChatUser;
+  };
+};
 
 const LogIn = () => {
+  const { control, setError, handleSubmit } = useForm<FormValues>();
+  const { navigate } = useNavigation<NavigationProp<ParamList, "Login">>();
+  const [, setUser] = useUser();
+  const [sendCreds] = useMutation<Response, FormValues>(loginQuery);
+  const onSubmit = async (variables: FormValues) => {
+    try {
+      const { data } = await sendCreds({ variables: variables });
+      if (data) {
+        const { user, token } = data.loginUser;
+        setUser({ ...user, token });
+        navigate("Rooms");
+      }
+    } catch (e) {
+      const error = getErrorMessage(e);
+      if (error === "Invalid credentials") {
+        setError("password", {
+          type: "validate",
+          message: "Wrong email or password",
+        });
+      } else setError("password", { message: error });
+    }
+  };
   return (
     <View style={{ ...mainView, ...styles.main }}>
       <Typography type="h1" style={styles.h1}>
@@ -22,12 +71,23 @@ const LogIn = () => {
         Log in and stay in touch with&nbsp;everyone!
       </Typography>
       <View style={styles.inputView}>
-        <Input label="e-mail address" />
-        <Input label="password" secure />
+        <Input
+          control={control}
+          label="e-mail address"
+          name="email"
+          required
+          pattern={emailRegex}
+        />
+        <Input
+          control={control}
+          label="password"
+          name="password"
+          secure
+          required
+        />
       </View>
-
       <View style={styles.bottomView}>
-        <CustomButton onPress={() => undefined}>Log in</CustomButton>
+        <CustomButton onPress={handleSubmit(onSubmit)}>Log in</CustomButton>
         <View style={styles.bottomTextsView}>
           <Typography type="caption2" style={styles.whiteText}>
             Don&apos;t have an account?

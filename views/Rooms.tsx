@@ -8,7 +8,7 @@ import SearchIcon from "../components/icons/Search";
 import RoomsContainer from "../components/rooms";
 import { userFrag } from "../lib/api";
 import { mainView } from "../styles";
-import { useUser } from "../utils/contexts/user";
+// import { useUser } from "../utils/contexts/user";
 
 const Buttons = () => (
   <>
@@ -24,25 +24,25 @@ const query = gql`
         id
         name
       }
-      ${userFrag}
+      # ${userFrag}
     }
   }
 `;
 interface Response {
   usersRooms: {
     rooms: Room[];
-    user: ChatUser;
+    // user: ChatUser;
   };
 }
 
 const Rooms = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [, setUser] = useUser();
+  // const [, setUser] = useUser();
   const { data } = useQuery<Response>(query);
   useEffect(() => {
     if (data) {
-      const { rooms, user } = data.usersRooms;
-      setUser(user);
+      const { rooms /*user*/ } = data.usersRooms;
+      // setUser(user);
       setRooms(rooms);
     }
   }, [data]);
