@@ -1,13 +1,13 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import {
-  Bubble,
   GiftedChat,
   IMessage,
   InputToolbar,
   Send,
+  User,
 } from "react-native-gifted-chat";
 import ChatHeaderItem from "../components/chat/ChatHeaderItem";
 import ChatMessage from "../components/chat/Message";
@@ -31,9 +31,12 @@ import {
 import { useUser } from "../utils/contexts/user";
 import { messageToGiftedMessage, userToGiftedUser } from "../utils/gifted";
 
-const query = gql`
-query Room($id:ID){
-	room(id:$id){
+const roomIdKey = "roomId";
+type RoomVariable = { [roomIdKey]: string };
+
+const roomQuery = gql`
+query Room($${roomIdKey}:String!){
+	room(id:$${roomIdKey}){
     id
     name
     messages{
@@ -46,11 +49,58 @@ query Room($id:ID){
   }
 }`;
 
-type Response = {
+type RoomResponse = {
   room: Room & {
     messages: ChatMessage[];
   };
 };
+
+const messageAddedQuery = gql`
+	subscription messageAdded($${roomIdKey}:String!){
+  messageAdded(roomId:$${roomIdKey}){
+    body
+    id
+    insertedAt
+    ${userFrag}
+  }
+}`;
+
+const checkTypingQuery = gql`
+	subscription typingUser($${roomIdKey}:String!){
+		typingUser(roomId:$${roomIdKey}){
+			email
+			firstName
+			id
+			lastName
+			role
+		}
+	}
+`;
+
+const setTypingQuery = gql`
+	mutation setTyping($${roomIdKey}:String!){
+		typingUser(roomId:$${roomIdKey}){
+			email
+			firstName
+			id
+			lastName
+			role
+  }
+	}
+`;
+
+const sendMessageQuery = gql`
+mutation sendMessage($${roomIdKey}:String!, $body:String!){
+  sendMessage(roomId:$${roomIdKey}, body:$body){
+    id
+    body
+    insertedAt
+    ${userFrag}
+  }
+}
+
+`;
+
 const Buttons = () => (
   <>
     <PhoneIcon />
@@ -69,22 +119,79 @@ function sortMessages(messages: IMessage[]) {
 
 const Chat = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const setSortMessages = (m: IMessage[]) => setMessages(sortMessages(m));
 
   const { params } = useRoute<RouteProp<ParamList, "Chat">>();
   const { roomId } = params;
-  const { data } = useQuery<Response>(query, { variables: { id: roomId } });
-  const room = data?.room;
+
+  // #region API
+  const { data, refetch: refetchMessages } = useQuery<
+    RoomResponse,
+    RoomVariable
+  >(roomQuery, {
+    variables: { roomId },
+  });
+
+  const { data: typingUserData } = useSubscription<
+    { typingUser: User },
+    RoomVariable
+  >(checkTypingQuery, {
+    variables: { roomId },
+  });
+  const { data: receivedMessageData } = useSubscription<
+    { messageAdded: ChatMessage },
+    RoomVariable
+  >(messageAddedQuery, { variables: { roomId } });
+  const [setTyping] = useMutation<ChatUser, RoomVariable>(setTypingQuery);
+
+  const [sendMessage, { data: sendMessageData }] =
+    useMutation<{ sendMessage: ChatMessage }>(sendMessageQuery);
+  // #endregion
+
+  // #region Get Current User
   const [loggedUser] = useUser();
+  const room = data?.room;
+
   if (loggedUser === undefined) throw new Error("No user logged in!");
+  // #endregion
+
+  // #region Message updates
+  // Update messages on enter
+  useEffect(() => {
+    refetchMessages({ roomId });
+  }, []);
+
+  // If fetched messages, set
   useEffect(() => {
     if (data) {
-      const receivedMessages = data.room.messages.map((m) =>
-        messageToGiftedMessage(m)
-      );
-      setSortMessages(receivedMessages);
+      const fetchedMessages = data.room.messages.map(messageToGiftedMessage);
+      setMessages(fetchedMessages);
     }
   }, [data]);
+
+  // If sent message, push it to messages
+  useEffect(() => {
+    if (sendMessageData) {
+      const sentMessage = messageToGiftedMessage(sendMessageData.sendMessage);
+      setMessages([...messages, sentMessage]);
+    }
+  }, [sendMessageData]);
+
+  // If received message, push it to messages
+  useEffect(() => {
+    if (receivedMessageData) {
+      const receivedMessage = messageToGiftedMessage(
+        receivedMessageData.messageAdded
+      );
+      setMessages([...messages, receivedMessage]);
+    }
+  }, [receivedMessageData]);
+  // #endregion
+
+  //#region Check typing
+  const isTyping =
+    typingUserData && typingUserData.typingUser._id !== loggedUser.id;
+  // #endregion
+
   return (
     <View style={mainView}>
       <Header Buttons={Buttons}>
@@ -92,16 +199,23 @@ const Chat = () => {
       </Header>
       {room && (
         <GiftedChat
-          onSend={(message) => setSortMessages([...messages, ...message])}
-          messages={messages}
+          onInputTextChanged={(text) => {
+            if (text) setTyping({ variables: { roomId } });
+          }}
+          onSend={(_messages) =>
+            _messages.forEach(({ text: body }) =>
+              sendMessage({ variables: { roomId, body } })
+            )
+          }
+          messages={sortMessages(messages)}
           user={userToGiftedUser(loggedUser)}
           timeTextStyle={{ right: styles.hideText, left: styles.hideText }}
           messagesContainerStyle={styles.container}
           renderAvatar={() => (
             <ProfileImage style={styles.avatar} source={room.image} />
           )}
-          renderMessage={(message) => (
-            <ChatMessage message={message} loggedUser={loggedUser} />
+          renderMessage={(props) => (
+            <ChatMessage message={props} loggedUser={loggedUser} />
           )}
           renderSend={(props) => (
             <Send {...props} containerStyle={styles.sendButton}>
@@ -111,7 +225,7 @@ const Chat = () => {
           renderInputToolbar={(props) => (
             <InputToolbar {...props} containerStyle={styles.toolbar} />
           )}
-          renderFooter={() => <TypingIndicator isTyping />}
+          renderFooter={() => <TypingIndicator isTyping={isTyping} />}
           textInputProps={{ style: styles.input }}
           alwaysShowSend
           infiniteScroll
@@ -130,7 +244,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 2 * dialogPadding,
     paddingBottom: inputHeight - 12,
-    // height:'94.5%'
   },
   hideText: {
     display: "none",
@@ -148,7 +261,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginRight: toolbarGap,
     color: blackColor,
-    // position:'relative'
   },
   toolbar: {
     height: 73,
