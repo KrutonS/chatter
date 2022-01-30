@@ -21,7 +21,7 @@ export default function App() {
     <ApolloProvider client={widlarzClient}>
       <UserProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator initialRouteName="LogIn">
             <Stack.Screen
               name="Rooms"
               component={Rooms}
@@ -34,7 +34,7 @@ export default function App() {
               options={disableHeader}
             />
             <Stack.Screen
-              name="Login"
+              name="LogIn"
               component={LogIn}
               options={disableHeader}
             />
