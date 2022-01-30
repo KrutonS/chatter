@@ -1,6 +1,13 @@
 import { FC, useState } from "react";
 import { Pressable, PressableProps, StyleSheet } from "react-native";
-import { centerContent, gray300, plum500, plum700, radius } from "../../styles";
+import {
+  bigSpace,
+  centerContent,
+  gray300,
+  plum500,
+  plum700,
+  radius,
+} from "../../styles";
 import Typography from "./Typography";
 
 interface Props {
@@ -38,6 +45,7 @@ const defaultButton: PressableProps["style"] = {
   backgroundColor: plum500,
   borderRadius: radius,
   height: 48,
+  marginBottom: bigSpace,
 };
 
 const buttons = StyleSheet.create({

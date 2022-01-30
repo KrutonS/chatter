@@ -55,7 +55,8 @@ export const radius = 12;
 export const bigRadius = 24;
 export const smallSpace = 12;
 export const bigSpace = 16;
-export const authTopMargin = 76;
+export const authTopSpace = 76;
+export const authBottomSpace = 31;
 //#endregion
 
 //#region Typography
@@ -75,6 +76,12 @@ export const typoStyles = StyleSheet.create({
     fontSize: 16,
     letterSpacing: 1,
     color: whiteColor,
+  },
+  buttonTextSmall: {
+    fontFamily: poppinsSemiBold,
+    fontSize: 14,
+    letterSpacing: 1,
+    color: plum500,
   },
   label: { fontFamily: poppinsMedium },
 
