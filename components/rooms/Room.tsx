@@ -39,7 +39,7 @@ const RoomView = ({ room }: Props) => {
         <Typography style={textStyle} type="h3">
           {name}
         </Typography>
-        <Typography style={textStyle} type="bodyText">
+        <Typography style={textStyle} type="bodyText" numberOfLines={1}>
           {receivedMessage || mess || "Not active"}
         </Typography>
       </View>
