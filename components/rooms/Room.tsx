@@ -7,6 +7,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { SvgProps } from "react-native-svg";
+import { useReceiveMessage } from "../../lib/commonQueries";
 import {
   smallSpace,
   plum500,
@@ -22,11 +23,14 @@ type Props = { room: Room };
 
 const RoomView = ({ room }: Props) => {
   const { name, active, image, lastActive, mess, id } = room;
-  const textStyle = active ? textActive : undefined;
-  const navigation = useNavigation<NavigationProp<ParamList, "Rooms">>();
+  const { data } = useReceiveMessage(id);
+
+  const receivedMessage = data?.messageAdded.body;
+  const textStyle = active || receivedMessage ? textActive : undefined;
+  const { navigate } = useNavigation<NavigationProp<ParamList, "Rooms">>();
   type FixNavigate = (to: "Chat", arg: ParamList["Chat"]) => void;
   const onPress = () => {
-    (navigation.navigate as FixNavigate)("Chat", { roomId: id });
+    (navigate as FixNavigate)("Chat", { roomId: id });
   };
   return (
     <Pressable style={active ? roomViewActive : roomView} onPress={onPress}>
@@ -36,7 +40,7 @@ const RoomView = ({ room }: Props) => {
           {name}
         </Typography>
         <Typography style={textStyle} type="bodyText">
-          {mess || "Not active"}
+          {receivedMessage || mess || "Not active"}
         </Typography>
       </View>
       <Status active={active} lastActive={lastActive} />

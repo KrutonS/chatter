@@ -19,6 +19,11 @@ import SendIcon from "../components/icons/Send";
 import VideoCallIcon from "../components/icons/VideoCall";
 import { userFrag } from "../lib/api";
 import {
+  roomIdKey,
+  RoomVariable,
+  useReceiveMessage,
+} from "../lib/commonQueries";
+import {
   blackColor,
   blue300,
   smallSpace,
@@ -30,9 +35,6 @@ import {
 } from "../styles";
 import { useUser } from "../utils/contexts/user";
 import { messageToGiftedMessage, userToGiftedUser } from "../utils/gifted";
-
-const roomIdKey = "roomId";
-type RoomVariable = { [roomIdKey]: string };
 
 const roomQuery = gql`
 query Room($${roomIdKey}:String!){
@@ -55,15 +57,15 @@ type RoomResponse = {
   };
 };
 
-const messageAddedQuery = gql`
-	subscription messageAdded($${roomIdKey}:String!){
-  messageAdded(roomId:$${roomIdKey}){
-    body
-    id
-    insertedAt
-    ${userFrag}
-  }
-}`;
+// const messageAddedQuery = gql`
+// 	subscription messageAdded($${roomIdKey}:String!){
+// 		messageAdded(roomId:$${roomIdKey}){
+// 			body
+// 			id
+// 			insertedAt
+// 			${userFrag}
+// 		}
+// 	}`;
 
 const checkTypingQuery = gql`
 	subscription typingUser($${roomIdKey}:String!){
@@ -85,21 +87,18 @@ const setTypingQuery = gql`
 			id
 			lastName
 			role
-  }
-	}
-`;
+  	}
+	}`;
 
 const sendMessageQuery = gql`
-mutation sendMessage($${roomIdKey}:String!, $body:String!){
-  sendMessage(roomId:$${roomIdKey}, body:$body){
-    id
-    body
-    insertedAt
-    ${userFrag}
-  }
-}
-
-`;
+	mutation sendMessage($${roomIdKey}:String!, $body:String!){
+		sendMessage(roomId:$${roomIdKey}, body:$body){
+			id
+			body
+			insertedAt
+			${userFrag}
+		}
+	}`;
 
 const Buttons = () => (
   <>
@@ -137,11 +136,16 @@ const Chat = () => {
   >(checkTypingQuery, {
     variables: { roomId },
   });
-  const { data: receivedMessageData } = useSubscription<
-    { messageAdded: ChatMessage },
-    RoomVariable
-  >(messageAddedQuery, { variables: { roomId } });
-  const [setTyping] = useMutation<ChatUser, RoomVariable>(setTypingQuery);
+
+  const { data: receivedMessageData } = useReceiveMessage(roomId);
+  // const { data: receivedMessageData } = useSubscription<
+  //   { messageAdded: ChatMessage },
+  //   RoomVariable
+  // >(messageAddedQuery, { variables: { roomId } });
+
+  const [setTyping] = useMutation<{ typingUser: ChatUser }, RoomVariable>(
+    setTypingQuery
+  );
 
   const [sendMessage, { data: sendMessageData }] =
     useMutation<{ sendMessage: ChatMessage }>(sendMessageQuery);
