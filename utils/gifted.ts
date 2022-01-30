@@ -17,7 +17,9 @@ export const messageToGiftedMessage = ({
   insertedAt,
   user,
 }: ChatMessage): IMessage => {
-  const date = moment(insertedAt, "YYYY-MM-DD hh:mm:ss", true).toDate();
+  const date = moment(insertedAt, "YYYY-MM-DD hh:mm:ss").toDate();
+  if (isNaN(date as never)) console.error("Error parsing date");
   const iUser = userToGiftedUser(user);
+
   return { _id: id, createdAt: date, text: body, user: iUser };
 };
