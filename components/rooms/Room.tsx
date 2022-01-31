@@ -8,7 +8,7 @@ import {
   whiteColor,
 } from "../../styles";
 import { useAppNavigation } from "../../utils/hooks/navigation";
-import { useReceiveMessage } from "../../utils/queries/receiveMessage";
+import { useReceiveMessage } from "../../utils/api/receiveMessage";
 import ProfileImage from "../common/ProfileImage";
 import Typography from "../common/Typography";
 import Status from "./Status";
@@ -16,15 +16,15 @@ import Status from "./Status";
 type Props = { room: ChatRoom };
 
 const RoomView = ({ room }: Props) => {
-  const { name, image, id: roomId } = room;
+  const { name, image } = room;
   // let message:IMessage|undefined = undefined
-  const receivedMessage = useReceiveMessage(roomId);
+  const receivedMessage = useReceiveMessage(room.id);
   const isActive = !!receivedMessage;
   // const receivedMessage = data?.messageAdded.body;
   // const isActive = !!receivedMessage;
   const { navigate } = useAppNavigation();
   const onPress = () => {
-    navigate("Chat", { roomId });
+    navigate("Chat", room);
   };
   return (
     <Pressable style={isActive ? roomViewActive : roomView} onPress={onPress}>

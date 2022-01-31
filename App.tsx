@@ -9,6 +9,8 @@ import Rooms from "./views/Rooms";
 import Chat from "./views/Chat";
 import LogIn from "./views/LogIn";
 import SignUp from "./views/SignUp";
+import { HeaderProvider } from "./utils/contexts/Header";
+import Header from "./components/Header";
 
 const disableHeader = { header: () => null };
 
@@ -19,33 +21,38 @@ export default function App() {
 
   return (
     <ApolloProvider client={widlarzClient}>
-      <UserProvider>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="LogIn">
-            <Stack.Screen
-              name="Rooms"
-              component={Rooms}
-              // TODO implement header with context
-              options={disableHeader}
-            />
-            <Stack.Screen
-              name="Chat"
-              component={Chat}
-              options={disableHeader}
-            />
-            <Stack.Screen
-              name="LogIn"
-              component={LogIn}
-              options={disableHeader}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUp}
-              options={disableHeader}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </UserProvider>
+      <HeaderProvider>
+        <UserProvider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="LogIn">
+              <Stack.Screen
+                name="Rooms"
+                component={Rooms}
+                options={{
+                  header: ({ route }) => <Header title={route.name} />,
+                }}
+              />
+              <Stack.Screen
+                name="Chat"
+                component={Chat}
+                options={{
+                  header: ({ route }) => <Header title={route.name} />,
+                }}
+              />
+              <Stack.Screen
+                name="LogIn"
+                component={LogIn}
+                options={disableHeader}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUp}
+                options={disableHeader}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </UserProvider>
+      </HeaderProvider>
     </ApolloProvider>
   );
 }

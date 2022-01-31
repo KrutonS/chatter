@@ -1,14 +1,11 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { useEffect } from "react";
+import { Dimensions, StyleSheet } from "react-native";
 import { GiftedChat, InputToolbar, Send } from "react-native-gifted-chat";
-import ChatHeaderItem from "../components/chat/ChatHeaderItem";
 import ChatMessage from "../components/chat/Message";
 import TypingIndicator from "../components/chat/TypingIndicator";
 import Main from "../components/common/MainView";
-import ProfileImage from "../components/common/ProfileImage";
-import Header from "../components/Header";
-import PhoneIcon from "../components/icons/Phone";
+// import ProfileImage from "../components/common/ProfileImage";
 import SendIcon from "../components/icons/Send";
-import VideoCallIcon from "../components/icons/VideoCall";
 import {
   blackColor,
   blue300,
@@ -18,33 +15,26 @@ import {
   bigSpace,
   whiteColor,
 } from "../styles";
+import { useHeader } from "../utils/contexts/Header";
 import { useUser } from "../utils/contexts/User";
 import { sortMessages, userToGiftedUser } from "../utils/gifted";
 import useRoom from "../utils/hooks/messages";
 import { useAppRoute } from "../utils/hooks/navigation";
 
-const Buttons = () => (
-  <>
-    <PhoneIcon />
-    <VideoCallIcon />
-  </>
-);
-
 const Chat = () => {
-  const { params } = useAppRoute<"Chat">();
-  const { roomId } = params;
+  const { params: roomData } = useAppRoute<"Chat">();
   const [loggedUser] = useUser(true);
+  const [, setHeader] = useHeader();
   const { isTyping, messages, onInputChange, onSend, room } = useRoom(
     loggedUser?.id,
-    roomId
+    roomData.id
   );
+
+  useEffect(() => setHeader(roomData), []);
 
   if (!loggedUser) return null;
   return (
     <Main>
-      <Header Buttons={Buttons}>
-        {room ? <ChatHeaderItem room={room} /> : <View />}
-      </Header>
       {room && (
         <GiftedChat
           onInputTextChanged={onInputChange}
@@ -53,9 +43,9 @@ const Chat = () => {
           user={userToGiftedUser(loggedUser)}
           timeTextStyle={{ right: styles.hideText, left: styles.hideText }}
           messagesContainerStyle={styles.container}
-          renderAvatar={() => (
-            <ProfileImage style={styles.avatar} source={room.image} />
-          )}
+          // renderAvatar={() => (
+          //   <ProfileImage style={styles.avatar} source={room.image} />
+          // )}
           renderMessage={(props) => (
             <ChatMessage message={props} loggedUser={loggedUser} />
           )}
@@ -71,7 +61,6 @@ const Chat = () => {
           textInputProps={{ style: styles.input }}
           alwaysShowSend
           infiniteScroll
-          isCustomViewBottom
         ></GiftedChat>
       )}
     </Main>
@@ -90,10 +79,10 @@ const styles = StyleSheet.create({
   hideText: {
     display: "none",
   },
-  avatar: {
-    width: 24,
-    height: 24,
-  },
+  // avatar: {
+  //   width: 24,
+  //   height: 24,
+  // },
   input: {
     backgroundColor: whiteColor,
     borderRadius: radius,

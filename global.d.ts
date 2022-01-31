@@ -22,7 +22,7 @@ declare global {
   };
   type ParamList = {
     Rooms: undefined;
-    Chat: { roomId: string };
+    Chat: ChatRoom;
     LogIn: undefined;
     SignUp: undefined;
   };
