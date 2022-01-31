@@ -18,7 +18,7 @@ import {
   bigSpace,
   whiteColor,
 } from "../styles";
-import { useUser } from "../utils/contexts/user";
+import { useUser } from "../utils/contexts/User";
 import { sortMessages, userToGiftedUser } from "../utils/gifted";
 import useRoom from "../utils/hooks/messages";
 import { useAppRoute } from "../utils/hooks/navigation";

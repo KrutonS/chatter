@@ -15,8 +15,7 @@ import {
   smallSpace,
   whiteColor,
 } from "../styles";
-import { useUser } from "../utils/contexts/user";
-import { emailRegex } from "../utils/global";
+import { useUser } from "../utils/contexts/User";
 import { handleError, UndefBehaviourError } from "../utils/errors";
 import { useAppNavigation } from "../utils/hooks/navigation";
 
@@ -48,7 +47,8 @@ const LogIn = () => {
 
   const onSubmit = async (variables: FormValues) => {
     try {
-      const { data } = await sendCreds({ variables: variables });
+      const { data, errors } = await sendCreds({ variables: variables });
+      if (errors) throw errors[0];
       if (data) {
         const { user, token } = data.loginUser;
         setUser({ ...user, token });
@@ -80,7 +80,7 @@ const LogIn = () => {
           label="e-mail address"
           name="email"
           required
-          pattern={emailRegex}
+          applyEmailRules
         />
         <Input
           control={control}
@@ -96,7 +96,7 @@ const LogIn = () => {
           <Typography type="caption2" white>
             Don&apos;t have an account?
           </Typography>
-          <SimpleLink to="SignUp" style={styles.signUp}>
+          <SimpleLink to="SignUp" spaceLeft>
             Sign up
           </SimpleLink>
         </View>
@@ -124,9 +124,6 @@ const styles = StyleSheet.create({
   bottomTextsView: {
     ...centerContent,
     flexDirection: "row",
-  },
-  signUp: {
-    marginLeft: smallSpace,
   },
 });
 
