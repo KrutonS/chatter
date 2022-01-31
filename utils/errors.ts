@@ -1,6 +1,9 @@
 import { FieldError } from "react-hook-form";
-
-export function handleError(error: unknown, handler = console.error) {
+type ErrorMessageHandler = (message: string) => void;
+export function handleError(
+  error: unknown,
+  handler: ErrorMessageHandler = console.error
+) {
   const message = getErrorMessage(error);
   handler(message);
 }
