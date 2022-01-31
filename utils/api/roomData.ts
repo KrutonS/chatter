@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";
+import { handleError } from "../errors";
 import { messageToGiftedMessage } from "../gifted";
 import { roomIdVar } from "../global";
 
@@ -35,8 +36,10 @@ type AddMessage = (m: IMessage) => void;
 type UseRoomDataReturn = [IMessage[], AddMessage, ChatRoom | null];
 
 export const useRoomData = (roomId: string): UseRoomDataReturn => {
-  const { data, refetch: refetchMessages } = useRoomQuery(roomId);
+  const { data, error, refetch: refetchMessages } = useRoomQuery(roomId);
   const [messages, setMessages] = useState<IMessage[]>([]);
+
+  if (error) handleError(error);
 
   // Update messages on enter
   useEffect(() => {

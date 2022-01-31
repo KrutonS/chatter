@@ -1,6 +1,7 @@
 import { gql, useMutation, useSubscription } from "@apollo/client";
 import { Falsy } from "react-native";
 import { User } from "react-native-gifted-chat";
+import { handleError } from "../errors";
 import { roomIdVar } from "../global";
 
 export const checkTypingQuery = gql`
@@ -34,12 +35,14 @@ type UseUserTyping = (
 ) => [boolean, OnInputChange];
 
 export const useUserTyping: UseUserTyping = (loggedUserId, roomId) => {
-  const { data: typingUserData } = useSubscription<
+  const { data: typingUserData, error } = useSubscription<
     TypingResponse,
     RoomVariable
   >(checkTypingQuery, {
     variables: { roomId },
   });
+  if (error) handleError(error);
+
   const [setTyping] = useMutation<TypingResponse, RoomVariable>(setTypingQuery);
 
   const isTyping =

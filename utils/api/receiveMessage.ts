@@ -2,6 +2,7 @@ import { gql, useSubscription } from "@apollo/client";
 import { useEffect } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";
+import { handleError } from "../errors";
 import { messageToGiftedMessage } from "../gifted";
 import { roomIdVar } from "../global";
 
@@ -25,7 +26,8 @@ export const useReceiveMessage = (
   roomId: string,
   onSuccess?: (m: IMessage) => void
 ) => {
-  const { data: receivedMessageData } = useReceiveMessageQuery(roomId);
+  const { data: receivedMessageData, error } = useReceiveMessageQuery(roomId);
+  if (error) handleError(error);
 
   // If received message, push it to messages
   useEffect(() => {

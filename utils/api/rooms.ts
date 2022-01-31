@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { userFrag } from "../../lib/api";
+import { handleError } from "../errors";
 
 const query = gql`
   query initial {
@@ -22,7 +23,9 @@ interface Response {
 export const useRooms = () => {
   const [rooms, setRooms] = useState<ChatRoom[]>([]);
   // const [, setUser] = useUser();
-  const { data } = useQuery<Response>(query);
+  const { data, error } = useQuery<Response>(query);
+  if (error) handleError(error);
+
   useEffect(() => {
     if (data) {
       const { rooms /*user*/ } = data.usersRooms;
