@@ -28,10 +28,12 @@ export const setTypingQuery = gql`
 export type TypingResponse = { typingUser: User };
 type OnInputChange = (text: string | Falsy) => void;
 
-export const useUserTyping = (
-  loggedUserId: string | Falsy,
-  roomId: string
-): [boolean, OnInputChange] => {
+type UseUserTyping = (
+  user: string | Falsy,
+  id: string
+) => [boolean, OnInputChange];
+
+export const useUserTyping: UseUserTyping = (loggedUserId, roomId) => {
   const { data: typingUserData } = useSubscription<
     TypingResponse,
     RoomVariable
