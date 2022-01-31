@@ -21,9 +21,20 @@ export function handleInputError(error: FieldError): string {
   return "Something went wrong";
 }
 
+export type ResponseError = {
+  errors: "email has already been taken";
+  locations: {
+    column: number;
+    line: number;
+  }[];
+  message: string;
+  path: string[];
+};
+
 export const getErrorMessage = (e: unknown) => {
-  if (e instanceof Error) return e.message;
   if (typeof e === "string") return e;
+  if (e instanceof Error) return e.message;
+
   return "Unknown error";
 };
 
