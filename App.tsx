@@ -3,7 +3,7 @@ import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import widlarzClient from "./lib/api";
-import { UserProvider } from "./utils/contexts/user";
+import { UserProvider } from "./utils/contexts/User";
 import { useLoadFonts } from "./utils/hooks/loadFonts";
 import Rooms from "./views/Rooms";
 import Chat from "./views/Chat";

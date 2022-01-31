@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, ViewProps, ViewStyle } from "react-native";
-import { bigRadius, blue300, bigSpace } from "../styles";
+import { bigRadius, blue300, bigSpace, rowDirectionMixin } from "../styles";
 
 interface Props {
   Buttons: FC<ViewProps>;
@@ -17,23 +17,19 @@ const Header: FC<Props> = ({ children, Buttons }) => {
 };
 
 const header: ViewStyle = {
+  backgroundColor: blue300,
   borderBottomLeftRadius: bigRadius,
   borderBottomRightRadius: bigRadius,
   height: 120,
   width: "100%",
-  display: "flex",
-  justifyContent: "space-between",
+  ...rowDirectionMixin("space-between"),
   alignItems: "flex-end",
-  flexDirection: "row",
   paddingHorizontal: bigSpace,
   paddingBottom: bigSpace,
-  backgroundColor: blue300,
 };
 
 const headerButtons: ViewStyle = {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
+  ...rowDirectionMixin("space-between"),
   width: 96,
 };
 

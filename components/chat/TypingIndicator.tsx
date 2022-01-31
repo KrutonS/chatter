@@ -1,5 +1,11 @@
 import { Animated, ImageSourcePropType, StyleSheet, View } from "react-native";
-import { blue300, smallSpace, radius, whiteColor } from "../../styles";
+import {
+  blue300,
+  smallSpace,
+  radius,
+  whiteColor,
+  rowDirectionMixin,
+} from "../../styles";
 import { useLoop } from "../../utils/animations";
 import ProfileImage from "../common/ProfileImage";
 
@@ -32,12 +38,10 @@ const TypingIndicator = ({ isTyping, avatar }: Props) => {
 
 const styles = StyleSheet.create({
   indicator: {
+    ...rowDirectionMixin("space-between"),
     backgroundColor: whiteColor,
     padding: smallSpace,
     width: 67,
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
     borderRadius: radius,
     borderBottomLeftRadius: 0,
   },

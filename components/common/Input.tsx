@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import {
   Control,
+  ControllerProps,
   FieldError,
   FieldValues,
   Path,
@@ -26,7 +27,17 @@ import VisionIcon from "../icons/Vision";
 import VisionLowIcon from "../icons/VisionLow";
 import Typography from "./Typography";
 import { handleInputError } from "../../utils/errors";
+import { emailRegex } from "../../utils/global";
 
+const passwordRules: ControllerProps["rules"] = {
+  minLength: {
+    value: 8,
+    message: "Password should be at least 8 characters long",
+  },
+};
+const emailRules: ControllerProps["rules"] = {
+  pattern: { value: emailRegex, message: "Invalid Email" },
+};
 interface Props<T extends FieldValues>
   extends Omit<
     TextInputProps,
@@ -37,7 +48,8 @@ interface Props<T extends FieldValues>
   control: Control<T>;
   secure?: boolean;
   required?: boolean;
-  pattern?: RegExp;
+  applyEmailRules?: boolean;
+  applyPasswordRules?: boolean;
 }
 
 const Input = <T extends FieldValues>({
@@ -47,16 +59,21 @@ const Input = <T extends FieldValues>({
   autoFocus,
   control,
   required,
-  pattern,
+  applyPasswordRules,
+  applyEmailRules,
   ...other
 }: Props<T>) => {
   const [shouldHide, setShouldHide] = useState(secure);
   const [focused, setFocused] = useState(autoFocus);
   const onPress = () => setShouldHide(!shouldHide);
+
+  let appliedRules = applyPasswordRules ? passwordRules : {};
+  if (applyEmailRules) appliedRules = { ...appliedRules, ...emailRules };
+
   const { field, formState } = useController<T>({
     name,
     control,
-    rules: { required, pattern },
+    rules: { ...appliedRules, required },
   });
   const errors = formState.errors[name] as FieldError | undefined;
   const { onBlur, onChange } = field;

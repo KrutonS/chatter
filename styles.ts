@@ -15,13 +15,22 @@ export const centerContent: FlexStyle = {
   justifyContent: "center",
   alignItems: "center",
 };
+
 export const removeFontPadding: TextStyle = {
   includeFontPadding: false,
   padding: 0,
   textAlignVertical: "bottom",
 };
 
-export const topRight = (dist: number): ViewStyle => ({
+export const rowDirectionMixin = (
+  justifyContent?: FlexStyle["justifyContent"]
+): FlexStyle => ({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent,
+});
+
+export const topRightMixin = (dist: number): ViewStyle => ({
   position: "absolute",
   top: dist,
   right: dist,

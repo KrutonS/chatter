@@ -1,5 +1,5 @@
 import { View, ViewStyle } from "react-native";
-import { activeColor, bigSpace, topRight } from "../../styles";
+import { activeColor, bigSpace, topRightMixin } from "../../styles";
 import Typography from "../common/Typography";
 
 type StatusProps = {
@@ -11,7 +11,7 @@ const Status = ({ active, lastActive }: StatusProps) => {
   if (active) return <View style={activeDot}></View>;
   if (lastActive)
     return (
-      <Typography style={topRight(bigSpace)} type="caption">
+      <Typography style={topRightMixin(bigSpace)} type="caption">
         {lastActive}
       </Typography>
     );
@@ -19,7 +19,7 @@ const Status = ({ active, lastActive }: StatusProps) => {
 };
 
 const activeDot: ViewStyle = {
-  ...topRight(bigSpace),
+  ...topRightMixin(bigSpace),
   backgroundColor: activeColor,
   width: 12,
   height: 12,
