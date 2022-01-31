@@ -1,14 +1,5 @@
-import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import {
-  GiftedChat,
-  IMessage,
-  InputToolbar,
-  Send,
-  User,
-} from "react-native-gifted-chat";
+import { GiftedChat, InputToolbar, Send } from "react-native-gifted-chat";
 import ChatHeaderItem from "../components/chat/ChatHeaderItem";
 import ChatMessage from "../components/chat/Message";
 import TypingIndicator from "../components/chat/TypingIndicator";
@@ -18,12 +9,6 @@ import Header from "../components/Header";
 import PhoneIcon from "../components/icons/Phone";
 import SendIcon from "../components/icons/Send";
 import VideoCallIcon from "../components/icons/VideoCall";
-import { userFrag } from "../lib/api";
-import {
-  roomIdKey,
-  RoomVariable,
-  useReceiveMessage,
-} from "../lib/commonQueries";
 import {
   blackColor,
   blue300,
@@ -34,71 +19,9 @@ import {
   whiteColor,
 } from "../styles";
 import { useUser } from "../utils/contexts/user";
-import { messageToGiftedMessage, userToGiftedUser } from "../utils/gifted";
-
-const roomQuery = gql`
-query Room($${roomIdKey}:String!){
-	room(id:$${roomIdKey}){
-    id
-    name
-    messages{
-      body
-      id
-      insertedAt
-      ${userFrag}
-    }
-    # ${userFrag}
-  }
-}`;
-
-type RoomResponse = {
-  room: Room & {
-    messages: ChatMessage[];
-  };
-};
-
-// const messageAddedQuery = gql`
-// 	subscription messageAdded($${roomIdKey}:String!){
-// 		messageAdded(roomId:$${roomIdKey}){
-// 			body
-// 			id
-// 			insertedAt
-// 			${userFrag}
-// 		}
-// 	}`;
-
-const checkTypingQuery = gql`
-	subscription typingUser($${roomIdKey}:String!){
-		typingUser(roomId:$${roomIdKey}){
-			email
-			firstName
-			id
-			lastName
-			role
-		}
-	}
-`;
-
-const setTypingQuery = gql`
-	mutation setTyping($${roomIdKey}:String!){
-		typingUser(roomId:$${roomIdKey}){
-			email
-			firstName
-			id
-			lastName
-			role
-  	}
-	}`;
-
-const sendMessageQuery = gql`
-	mutation sendMessage($${roomIdKey}:String!, $body:String!){
-		sendMessage(roomId:$${roomIdKey}, body:$body){
-			id
-			body
-			insertedAt
-			${userFrag}
-		}
-	}`;
+import { sortMessages, userToGiftedUser } from "../utils/gifted";
+import useRoom from "../utils/hooks/messages";
+import { useAppRoute } from "../utils/hooks/navigation";
 
 const Buttons = () => (
   <>
@@ -107,95 +30,16 @@ const Buttons = () => (
   </>
 );
 
-function sortMessages(messages: IMessage[]) {
-  return messages.sort(({ createdAt: aTime }, { createdAt: bTime }) => {
-    if (aTime instanceof Date && bTime instanceof Date) {
-      return bTime.getTime() - aTime.getTime();
-    }
-    return (aTime as number) - (bTime as number);
-  });
-}
-
 const Chat = () => {
-  const [messages, setMessages] = useState<IMessage[]>([]);
-
-  const { params } = useRoute<RouteProp<ParamList, "Chat">>();
+  const { params } = useAppRoute<"Chat">();
   const { roomId } = params;
-
-  // #region API
-  const { data, refetch: refetchMessages } = useQuery<
-    RoomResponse,
-    RoomVariable
-  >(roomQuery, {
-    variables: { roomId },
-  });
-
-  const { data: typingUserData } = useSubscription<
-    { typingUser: User },
-    RoomVariable
-  >(checkTypingQuery, {
-    variables: { roomId },
-  });
-
-  const { data: receivedMessageData } = useReceiveMessage(roomId);
-  // const { data: receivedMessageData } = useSubscription<
-  //   { messageAdded: ChatMessage },
-  //   RoomVariable
-  // >(messageAddedQuery, { variables: { roomId } });
-
-  const [setTyping] = useMutation<{ typingUser: ChatUser }, RoomVariable>(
-    setTypingQuery
+  const [loggedUser] = useUser(true);
+  const { isTyping, messages, onInputChange, onSend, room } = useRoom(
+    loggedUser?.id,
+    roomId
   );
 
-  const [sendMessage, { data: sendMessageData }] =
-    useMutation<{ sendMessage: ChatMessage }>(sendMessageQuery);
-  // #endregion
-
-  // #region Get Current User
-  const [loggedUser] = useUser();
-  const room = data?.room;
-
-  if (loggedUser === undefined) throw new Error("No user logged in!");
-  // #endregion
-
-  // #region Message updates
-  // Update messages on enter
-  useEffect(() => {
-    refetchMessages({ roomId });
-  }, []);
-
-  // If fetched messages, set
-  useEffect(() => {
-    if (data) {
-      const fetchedMessages = data.room.messages.map(messageToGiftedMessage);
-      setMessages(fetchedMessages);
-    }
-  }, [data]);
-
-  // If sent message, push it to messages
-  useEffect(() => {
-    if (sendMessageData) {
-      const sentMessage = messageToGiftedMessage(sendMessageData.sendMessage);
-      setMessages([...messages, sentMessage]);
-    }
-  }, [sendMessageData]);
-
-  // If received message, push it to messages
-  useEffect(() => {
-    if (receivedMessageData) {
-      const receivedMessage = messageToGiftedMessage(
-        receivedMessageData.messageAdded
-      );
-      setMessages([...messages, receivedMessage]);
-    }
-  }, [receivedMessageData]);
-  // #endregion
-
-  //#region Check typing
-  const isTyping =
-    typingUserData && typingUserData.typingUser._id !== loggedUser.id;
-  // #endregion
-
+  if (!loggedUser) return null;
   return (
     <Main>
       <Header Buttons={Buttons}>
@@ -203,14 +47,8 @@ const Chat = () => {
       </Header>
       {room && (
         <GiftedChat
-          onInputTextChanged={(text) => {
-            if (text) setTyping({ variables: { roomId } });
-          }}
-          onSend={(_messages) =>
-            _messages.forEach(({ text: body }) =>
-              sendMessage({ variables: { roomId, body } })
-            )
-          }
+          onInputTextChanged={onInputChange}
+          onSend={onSend}
           messages={sortMessages(messages)}
           user={userToGiftedUser(loggedUser)}
           timeTextStyle={{ right: styles.hideText, left: styles.hideText }}

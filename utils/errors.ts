@@ -1,9 +1,8 @@
 import { FieldError } from "react-hook-form";
 
-const defaultHandler = (error: Error) => console.error(error.message);
-
-export function handleError(error: Error, handler = defaultHandler) {
-  handler(error);
+export function handleError(error: unknown, handler = console.error) {
+  const message = getErrorMessage(error);
+  handler(message);
 }
 
 export function handleInputError(error: FieldError): string {
@@ -24,3 +23,9 @@ export const getErrorMessage = (e: unknown) => {
   if (typeof e === "string") return e;
   return "Unknown error";
 };
+
+export class UndefBehaviourError extends Error {
+  constructor() {
+    super("Undefined Behaviour");
+  }
+}

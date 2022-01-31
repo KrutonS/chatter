@@ -1,18 +1,25 @@
 import { Text, TextProps, TextStyle } from "react-native";
-import { typoStyles } from "../../styles";
+import { smallSpace, typoStyles, whiteColor } from "../../styles";
 
 type TypoKeys = keyof typeof typoStyles;
 interface CustomProps {
-  style?: TextStyle;
   children: string;
   type: TypoKeys;
+  style?: TextStyle;
+  white?: boolean;
+  spaceLeft?: boolean;
 }
 export type TypoProps = CustomProps & Omit<TextProps, "style">;
 
-const Typography = ({ type, children, style, ...other }: TypoProps) => {
-  let textStyle: TextStyle = typoStyles[type];
+// prettier-ignore
+const Typography = ({ type, children, style,white, spaceLeft, ...other }: TypoProps) => {
+	let textStyle: TextStyle = typoStyles[type];
+	
+	if(white) textStyle = {...textStyle, color:whiteColor}
+	if(spaceLeft) textStyle = {...textStyle, marginLeft:smallSpace}
   if (style) textStyle = { ...textStyle, ...style };
-  return (
+  
+	return (
     <Text {...other} style={textStyle}>
       {children}
     </Text>

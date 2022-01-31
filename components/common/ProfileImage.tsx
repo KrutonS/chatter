@@ -6,7 +6,6 @@ type Props = Partial<ImageProps>;
 
 const ProfileImage: FC<Props> = ({ source, ...other }) => {
   if (!source) return <ProfilePlaceholder {...other} />;
-
   return <Image source={source} {...other} />;
 };
 

@@ -1,5 +1,4 @@
 import { gql, useMutation } from "@apollo/client";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import CustomButton from "../components/common/Button";
@@ -9,10 +8,17 @@ import SimpleLink from "../components/common/Link";
 import Main from "../components/common/MainView";
 import Typography from "../components/common/Typography";
 import { userFrag } from "../lib/api";
-import { authBottomSpace, bigSpace, smallSpace, whiteColor } from "../styles";
+import {
+  authBottomSpace,
+  bigSpace,
+  centerContent,
+  smallSpace,
+  whiteColor,
+} from "../styles";
 import { useUser } from "../utils/contexts/user";
 import { emailRegex } from "../utils/global";
-import { getErrorMessage } from "../utils/handleError";
+import { handleError, UndefBehaviourError } from "../utils/errors";
+import { useAppNavigation } from "../utils/hooks/navigation";
 
 const loginQuery = gql`
 mutation login($email:String!, $password:String!){
@@ -36,9 +42,10 @@ type Response = {
 
 const LogIn = () => {
   const { control, setError, handleSubmit } = useForm<FormValues>();
-  const { navigate } = useNavigation<NavigationProp<ParamList, "LogIn">>();
+  const { navigate } = useAppNavigation();
   const [, setUser] = useUser();
   const [sendCreds] = useMutation<Response, FormValues>(loginQuery);
+
   const onSubmit = async (variables: FormValues) => {
     try {
       const { data } = await sendCreds({ variables: variables });
@@ -46,23 +53,25 @@ const LogIn = () => {
         const { user, token } = data.loginUser;
         setUser({ ...user, token });
         navigate("Rooms");
-      }
+      } else throw new UndefBehaviourError();
     } catch (e) {
-      const error = getErrorMessage(e);
-      if (error === "Invalid credentials") {
-        setError("password", {
-          type: "validate",
-          message: "Wrong email or password",
-        });
-      } else setError("password", { message: error });
+      handleError(e, (message) => {
+        if (message === "Invalid credentials") {
+          setError("password", {
+            type: "validate",
+            message: "Wrong email or password",
+          });
+        } else setError("password", { message });
+      });
     }
   };
+
   return (
     <Main forAuth>
-      <Typography type="h1" style={styles.h1}>
+      <Typography type="h1" style={styles.title}>
         Welcome Back
       </Typography>
-      <Typography type="h2" style={styles.h2}>
+      <Typography type="h2" style={styles.subtitle}>
         Log in and stay in touch with&nbsp;everyone!
       </Typography>
       <InputContainer>
@@ -84,7 +93,7 @@ const LogIn = () => {
       <View style={styles.bottomView}>
         <CustomButton onPress={handleSubmit(onSubmit)}>Log in</CustomButton>
         <View style={styles.bottomTextsView}>
-          <Typography type="caption2" style={styles.whiteText}>
+          <Typography type="caption2" white>
             Don&apos;t have an account?
           </Typography>
           <SimpleLink to="SignUp" style={styles.signUp}>
@@ -97,30 +106,24 @@ const LogIn = () => {
 };
 
 const styles = StyleSheet.create({
-  h1: {
+  title: {
     marginBottom: smallSpace * 2,
   },
-  h2: {
+  subtitle: {
     color: whiteColor,
     marginBottom: smallSpace * 3,
   },
-  whiteText: {
-    color: whiteColor,
-  },
-
   bottomView: {
-    position: "absolute",
-    bottom: 0,
-    display: "flex",
-    alignItems: "center",
-    left: bigSpace,
+    ...centerContent,
     width: "100%",
     marginBottom: authBottomSpace,
+    position: "absolute",
+    bottom: 0,
+    left: bigSpace,
   },
   bottomTextsView: {
-    display: "flex",
+    ...centerContent,
     flexDirection: "row",
-    alignItems: "center",
   },
   signUp: {
     marginLeft: smallSpace,

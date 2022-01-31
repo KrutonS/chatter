@@ -1,5 +1,4 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
-// import { typoStyles } from "../../styles";
+import { useAppNavigation } from "../../utils/hooks/navigation";
 import Typography, { TypoProps } from "./Typography";
 
 interface Props extends Omit<TypoProps, "type"> {
@@ -8,7 +7,7 @@ interface Props extends Omit<TypoProps, "type"> {
 }
 
 const SimpleLink = ({ to, type = "buttonTextSmall", ...other }: Props) => {
-  const { navigate } = useNavigation<NavigationProp<ParamList, "Rooms">>();
+  const { navigate } = useAppNavigation();
   return <Typography {...other} type={type} onPress={() => navigate(to)} />;
 };
 

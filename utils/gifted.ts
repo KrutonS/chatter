@@ -23,3 +23,12 @@ export const messageToGiftedMessage = ({
 
   return { _id: id, createdAt: date, text: body, user: iUser };
 };
+
+export function sortMessages(messages: IMessage[]) {
+  return messages.sort(({ createdAt: aTime }, { createdAt: bTime }) => {
+    if (aTime instanceof Date && bTime instanceof Date) {
+      return bTime.getTime() - aTime.getTime();
+    }
+    return (aTime as number) - (bTime as number);
+  });
+}

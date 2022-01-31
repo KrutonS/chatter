@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Pressable, PressableProps, StyleSheet } from "react-native";
+import { Pressable, PressableProps, StyleSheet, ViewStyle } from "react-native";
 import {
   bigSpace,
   centerContent,
@@ -10,13 +10,24 @@ import {
 } from "../../styles";
 import Typography from "./Typography";
 
-interface Props {
+interface Props
+  extends Omit<
+    PressableProps,
+    "style" | "onPress" | "onPressIn" | "onPressOut"
+  > {
   children: string;
   onPress: VoidFunction;
   disabled?: boolean;
+  style?: ViewStyle;
 }
 
-const CustomButton: FC<Props> = ({ onPress, children, disabled }) => {
+const CustomButton: FC<Props> = ({
+  onPress,
+  children,
+  disabled,
+  style = {},
+  ...other
+}) => {
   const [isPressed, setIsPressed] = useState(false);
   const onPressIn = () => setIsPressed(true);
   const onPressOut = () => setIsPressed(false);
@@ -28,7 +39,8 @@ const CustomButton: FC<Props> = ({ onPress, children, disabled }) => {
 
   return (
     <Pressable
-      style={buttonStyle}
+      {...other}
+      style={{ ...buttonStyle, ...style }}
       onPress={onPress}
       disabled={disabled}
       onPressIn={onPressIn}

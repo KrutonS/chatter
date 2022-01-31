@@ -19,7 +19,7 @@ const Status = ({ active, lastActive }: StatusProps) => {
 };
 
 const activeDot: ViewStyle = {
-  ...topRight,
+  ...topRight(bigSpace),
   backgroundColor: activeColor,
   width: 12,
   height: 12,

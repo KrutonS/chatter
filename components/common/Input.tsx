@@ -25,7 +25,7 @@ import {
 import VisionIcon from "../icons/Vision";
 import VisionLowIcon from "../icons/VisionLow";
 import Typography from "./Typography";
-import { handleInputError } from "../../utils/handleError";
+import { handleInputError } from "../../utils/errors";
 
 interface Props<T extends FieldValues>
   extends Omit<
@@ -66,7 +66,7 @@ const Input = <T extends FieldValues>({
 
   return (
     <>
-      <Typography type="label" style={styles.label}>
+      <Typography type="label" white>
         {label}
       </Typography>
       <View>
@@ -105,9 +105,6 @@ const styles = StyleSheet.create({
     height: 47,
     paddingHorizontal: bigSpace,
     marginBottom: bigSpace,
-  },
-  label: {
-    color: whiteColor,
   },
   focused: {
     borderColor: plum500,

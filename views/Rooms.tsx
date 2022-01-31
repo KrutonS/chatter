@@ -9,13 +9,6 @@ import RoomsContainer from "../components/rooms";
 import { userFrag } from "../lib/api";
 // import { useUser } from "../utils/contexts/user";
 
-const Buttons = () => (
-  <>
-    <SearchIcon />
-    <RoomsIcon />
-  </>
-);
-
 const query = gql`
   query initial {
     usersRooms {
@@ -29,13 +22,19 @@ const query = gql`
 `;
 interface Response {
   usersRooms: {
-    rooms: Room[];
+    rooms: ChatRoom[];
     // user: ChatUser;
   };
 }
 
+const Buttons = () => (
+  <>
+    <SearchIcon />
+    <RoomsIcon />
+  </>
+);
 const Rooms = () => {
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<ChatRoom[]>([]);
   // const [, setUser] = useUser();
   const { data } = useQuery<Response>(query);
   useEffect(() => {

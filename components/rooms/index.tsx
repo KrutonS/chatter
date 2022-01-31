@@ -1,7 +1,7 @@
 import { ScrollView, ViewStyle } from "react-native";
 import RoomView from "./Room";
 
-type Props = { rooms: Room[] };
+type Props = { rooms: ChatRoom[] };
 
 const RoomsContainer = ({ rooms }: Props) => {
   return (

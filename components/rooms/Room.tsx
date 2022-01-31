@@ -1,13 +1,5 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
-import {
-  ImageStyle,
-  Pressable,
-  TextStyle,
-  View,
-  ViewStyle,
-} from "react-native";
+import { ImageStyle, Pressable, View, ViewStyle } from "react-native";
 import { SvgProps } from "react-native-svg";
-import { useReceiveMessage } from "../../lib/commonQueries";
 import {
   smallSpace,
   plum500,
@@ -15,35 +7,37 @@ import {
   bigSpace,
   whiteColor,
 } from "../../styles";
+import { useAppNavigation } from "../../utils/hooks/navigation";
+import { useReceiveMessage } from "../../utils/queries/receiveMessage";
 import ProfileImage from "../common/ProfileImage";
 import Typography from "../common/Typography";
 import Status from "./Status";
 
-type Props = { room: Room };
+type Props = { room: ChatRoom };
 
 const RoomView = ({ room }: Props) => {
-  const { name, active, image, lastActive, mess, id } = room;
-  const { data } = useReceiveMessage(id);
-
-  const receivedMessage = data?.messageAdded.body;
-  const textStyle = active || receivedMessage ? textActive : undefined;
-  const { navigate } = useNavigation<NavigationProp<ParamList, "Rooms">>();
-  type FixNavigate = (to: "Chat", arg: ParamList["Chat"]) => void;
+  const { name, image, id: roomId } = room;
+  // let message:IMessage|undefined = undefined
+  const receivedMessage = useReceiveMessage(roomId);
+  const isActive = !!receivedMessage;
+  // const receivedMessage = data?.messageAdded.body;
+  // const isActive = !!receivedMessage;
+  const { navigate } = useAppNavigation();
   const onPress = () => {
-    (navigate as FixNavigate)("Chat", { roomId: id });
+    navigate("Chat", { roomId });
   };
   return (
-    <Pressable style={active ? roomViewActive : roomView} onPress={onPress}>
+    <Pressable style={isActive ? roomViewActive : roomView} onPress={onPress}>
       <ProfileImage source={image} style={imageStyle} />
       <View style={texts}>
-        <Typography style={textStyle} type="h3">
+        <Typography type="h3" white={isActive}>
           {name}
         </Typography>
-        <Typography style={textStyle} type="bodyText" numberOfLines={1}>
-          {receivedMessage || mess || "Not active"}
+        <Typography white={isActive} type="bodyText" numberOfLines={1}>
+          {receivedMessage?.body || "Not active"}
         </Typography>
       </View>
-      <Status active={active} lastActive={lastActive} />
+      <Status active={isActive} />
     </Pressable>
   );
 };
@@ -64,7 +58,7 @@ const roomViewActive: ViewStyle = {
   ...roomView,
   backgroundColor: plum500,
 };
-const textActive: TextStyle = { color: whiteColor };
+// const textActive: TextStyle = { color: whiteColor };
 const imageStyle: ImageStyle & SvgProps = {
   width: 64,
   height: 64,

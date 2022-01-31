@@ -7,6 +7,8 @@ import {
   useMemo,
   useState,
 } from "react";
+import { handleError } from "../errors";
+import { useAppNavigation } from "../hooks/navigation";
 
 type LoggedUser = ChatUser & { token: string };
 
@@ -22,7 +24,17 @@ export const UserProvider: FC = ({ children }) => {
   return <userContext.Provider value={state}>{children}</userContext.Provider>;
 };
 
-export const useUser = (): [LoggedUser | undefined, SetUser] => {
+export const useUser = (
+  validate?: boolean
+): [LoggedUser | undefined, SetUser] => {
   const { user, setUser } = useContext(userContext);
+  const { navigate } = useAppNavigation();
+
+  if (validate && user === undefined) {
+    handleError("User is unavailable!", (m) => {
+      console.error(m);
+      navigate("LogIn");
+    });
+  }
   return [user, setUser];
 };
