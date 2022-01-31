@@ -25,9 +25,11 @@ const Chat = () => {
   const { params: roomData } = useAppRoute<"Chat">();
   const [loggedUser] = useUser(true);
   const [, setHeader] = useHeader();
+  const userId = loggedUser?.id;
+  const { id: roomId } = roomData;
   const { isTyping, messages, onInputChange, onSend, room } = useRoom(
-    loggedUser?.id,
-    roomData.id
+    userId,
+    roomId
   );
 
   useEffect(() => setHeader(roomData), []);
