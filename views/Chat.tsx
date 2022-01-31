@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { GiftedChat, InputToolbar, Send } from "react-native-gifted-chat";
 import ChatHeaderItem from "../components/chat/ChatHeaderItem";
 import ChatMessage from "../components/chat/Message";
@@ -43,7 +43,7 @@ const Chat = () => {
   return (
     <Main>
       <Header Buttons={Buttons}>
-        {room && <ChatHeaderItem room={room} />}
+        {room ? <ChatHeaderItem room={room} /> : <View />}
       </Header>
       {room && (
         <GiftedChat
