@@ -44,7 +44,7 @@ export const useRoomData = (roomId: string): UseRoomDataReturn => {
   // Update messages on enter
   useEffect(() => {
     refetchMessages({ roomId });
-  }, []);
+  }, [roomId]);
 
   // If fetched messages, set
   useEffect(() => {

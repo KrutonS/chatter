@@ -18,7 +18,7 @@ type Props = { room: ChatRoom };
 const RoomView = ({ room }: Props) => {
   const { name, image } = room;
   // let message:IMessage|undefined = undefined
-  const receivedMessage = useReceiveMessage(room.id);
+  const { receivedMessage } = useReceiveMessage(room.id);
   const isActive = !!receivedMessage;
   // const receivedMessage = data?.messageAdded.body;
   // const isActive = !!receivedMessage;

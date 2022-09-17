@@ -1,4 +1,4 @@
-import { gql, useSubscription } from "@apollo/client";
+import { gql, QueryHookOptions, useSubscription } from "@apollo/client";
 import { useEffect } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";
@@ -15,18 +15,21 @@ export const messageAddedQuery = gql`
     ${userFrag}
   }
 }`;
-
+type MessageAddedResponse = { messageAdded: ChatMessage };
 export const useReceiveMessageQuery = (roomId: string) =>
-  useSubscription<{ messageAdded: ChatMessage }, RoomVariable>(
-    messageAddedQuery,
-    { variables: { roomId } }
-  );
+  useSubscription<MessageAddedResponse, RoomVariable>(messageAddedQuery, {
+    variables: { roomId },
+  });
 
 export const useReceiveMessage = (
   roomId: string,
   onSuccess?: (m: IMessage) => void
 ) => {
-  const { data: receivedMessageData, error } = useReceiveMessageQuery(roomId);
+  const {
+    data: receivedMessageData,
+    error,
+    ...other
+  } = useReceiveMessageQuery(roomId);
   if (error) handleError(error);
 
   // If received message, push it to messages
@@ -39,5 +42,6 @@ export const useReceiveMessage = (
       // setMessages([...messages, receivedMessage]);
     }
   }, [receivedMessageData]);
-  return receivedMessageData?.messageAdded;
+  const receivedMessage = receivedMessageData?.messageAdded;
+  return { receivedMessage, error, ...other };
 };
