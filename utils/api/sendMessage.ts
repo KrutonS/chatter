@@ -1,7 +1,15 @@
-import { gql, useMutation } from "@apollo/client";
+import {
+  ApolloCache,
+  DefaultContext,
+  gql,
+  MutationTuple,
+  OperationVariables,
+  useMutation,
+} from "@apollo/client";
 import { useEffect } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";
+import { luser } from "../../views/LogIn";
 import { handleError } from "../errors";
 import { messageToGiftedMessage } from "../gifted";
 import { roomIdVar } from "../global";
@@ -17,8 +25,23 @@ export const sendMessageQuery = gql`
 	}`;
 export type SendMessageResponse = { sendMessage: ChatMessage };
 
+let i = 1;
 export const useSendMessageQuery = () =>
-  useMutation<SendMessageResponse>(sendMessageQuery);
+  //  useMutation<SendMessageResponse>(sendMessageQuery);
+  [
+    () => null,
+    {
+      data: {
+        sendMessage: {
+          body: "MESSAGE " + i++,
+          id: i + "",
+          insertedAt: new Date().toISOString(),
+          user: luser,
+        },
+      },
+      error: null,
+    },
+  ] as const;
 
 export const useSendMessage = (
   roomId: string,
@@ -36,8 +59,6 @@ export const useSendMessage = (
   }, [sendMessageData]);
 
   const onSend = (messages: IMessage[]) =>
-    messages.forEach(({ text: body }) =>
-      sendMessage({ variables: { roomId, body } })
-    );
+    messages.forEach(({ text: body }) => sendMessage());
   return onSend;
 };

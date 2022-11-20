@@ -45,9 +45,6 @@ const Chat = () => {
           user={userToGiftedUser(loggedUser)}
           timeTextStyle={{ right: styles.hideText, left: styles.hideText }}
           messagesContainerStyle={styles.container}
-          // renderAvatar={() => (
-          //   <ProfileImage style={styles.avatar} source={room.image} />
-          // )}
           renderMessage={(props) => (
             <ChatMessage message={props} loggedUser={loggedUser} />
           )}

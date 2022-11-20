@@ -1,4 +1,4 @@
-import { gql, QueryHookOptions, useSubscription } from "@apollo/client";
+import { gql, useSubscription } from "@apollo/client";
 import { useEffect } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";

@@ -35,23 +35,23 @@ type UseUserTyping = (
 ) => [boolean, OnInputChange];
 
 export const useUserTyping: UseUserTyping = (loggedUserId, roomId) => {
-  const { data: typingUserData, error } = useSubscription<
-    TypingResponse,
-    RoomVariable
-  >(checkTypingQuery, {
-    variables: { roomId },
-  });
-  if (error) handleError(error);
+  // const { data: typingUserData, error } = useSubscription<
+  //   TypingResponse,
+  //   RoomVariable
+  // >(checkTypingQuery, {
+  //   variables: { roomId },
+  // });
+  // if (error) handleError(error);
 
-  const [setTyping] = useMutation<TypingResponse, RoomVariable>(setTypingQuery);
+  // const [setTyping] = useMutation<TypingResponse, RoomVariable>(setTypingQuery);
 
-  const isTyping =
-    typingUserData &&
-    loggedUserId &&
-    typingUserData.typingUser._id !== loggedUserId;
+  const isTyping = true;
+  // typingUserData &&
+  // loggedUserId &&
+  // typingUserData.typingUser._id !== loggedUserId;
 
   const onInputChange: OnInputChange = (text) => {
-    if (text) setTyping({ variables: { roomId } });
+    // if (text) setTyping({ variables: { roomId } });
   };
 
   return [!!isTyping, onInputChange];

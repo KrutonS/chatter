@@ -38,7 +38,13 @@ type Response = {
     user: ChatUser;
   };
 };
-
+export const luser = {
+  email: "testemail@gmail.com",
+  firstName: "Strange",
+  id: "0",
+  lastName: "Bonk",
+  role: "user",
+};
 const LogIn = () => {
   const { control, setError, handleSubmit } = useForm<FormValues>();
   const { navigate } = useAppNavigation();
@@ -46,23 +52,24 @@ const LogIn = () => {
   const [sendCreds] = useMutation<Response, FormValues>(loginQuery);
 
   const onSubmit = async (variables: FormValues) => {
-    try {
-      const { data, errors } = await sendCreds({ variables: variables });
-      if (errors) throw errors[0];
-      if (data) {
-        const { user, token } = data.loginUser;
-        setUser({ ...user, token });
-        navigate("Rooms");
-      } else throw new UndefBehaviourError();
-    } catch (e) {
-      handleError(e, (message) => {
-        if (message === "Invalid credentials") {
-          setError("password", {
-            type: "validate",
-            message: "Wrong email or password",
-          });
-        } else setError("password", { message });
-      });
+    // try {
+    const { data, errors } = await sendCreds({ variables: variables });
+    if (errors) throw errors[0];
+    if (data) {
+      // const { user, token } = data.loginUser;
+      const usermock: ChatUser = luser;
+      setUser({ ...usermock, token: "abc" });
+      navigate("Rooms");
+      // } else throw new UndefBehaviourError();
+      // } catch (e) {
+      // handleError(e, (message) => {
+      //   if (message === "Invalid credentials") {
+      //     setError("password", {
+      //       type: "validate",
+      //       message: "Wrong email or password",
+      //     });
+      //   } else setError("password", { message });
+      // });
     }
   };
 
